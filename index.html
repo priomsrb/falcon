@@ -122,7 +122,7 @@
                     <strong>Fast.</strong> Cloud APIs need to turn around requests quickly, and make efficient use of hardware. Falcon processes requests several times faster than other popular web frameworks.
                 </p>
                 <p class="lead">
-                    <strong>Flexible.</strong> Falcon can be deployed in a variety of ways, depending on your needs. The framework speaks WSGI, and works great with Python 2.6 and 2.7, PyPy, and Python 3.3. There's no tight coupling with any async framework, leaving you free to mix-and-match what you need for your web service.
+                    <strong>Flexible.</strong> Falcon can be deployed in a variety of ways, depending on your needs. The framework speaks WSGI, and works great with Python 2.6 and 2.7, PyPy, and Python 3.3/3.4. There's no tight coupling with any async framework, leaving you free to mix-and-match what you need for your web service.
                 </p>
                 <p class="lead">
                     Try the <a href="https://github.com/racker/falcon/blob/master/README.md#install" alt='falcon web framework install' target="_">Falcon Web Framework</a> and then check out these <a alt="Falcon web framework hooks library" href="https://github.com/talons/talons" target="_">Talons</a>.
@@ -166,7 +166,7 @@
                     <strong>Method.</strong> 200,000 iterations were executed per trial, and the best time was recorded for each framework over 20 trials. The order in which the frameworks were tested was randomized for each trial. Also, garbage collection was enabled as it would be in a production environment, and a full collection was forcefully triggered before each trial. Finally, results were calculated using the Decimal class, and rounded to the nearest whole number.
                 </p>
                 <p class="lead">
-                    <strong>Platform.</strong> Benchmarks were executed on a Rackspace Cloud Server (1 GB Performance), running Arch 2013.9 with all system packages updated to their latest versions as of 16 Jan 2014.
+                    <strong>Platform.</strong> Benchmarks were executed on a Rackspace Cloud Server (1 GB Performance), running Arch 2013.9 with all system packages updated to their latest versions as of 16 Jan 2014. The frameworks were tested on several different versions of Python. Note that in these tests the Falcon modules were not cythonized; generally speaking, the reader may expect a ~10% boost in performance when Falcon is installed with Cython.
                 </p>
 
                 <p class="lead">Python 2.7.6</p>
