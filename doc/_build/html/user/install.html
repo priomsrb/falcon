@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../index.html" />
+    <link rel="next" title="Quickstart" href="quickstart.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Quickstart"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation">
+<span id="install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install-from-pypi">
+<h2>Install from PyPI<a class="headerlink" href="#install-from-pypi" title="Permalink to this headline">¶</a></h2>
+<p>Falcon is super easy to install with pip. If you don&#8217;t have pip yet,
+please run—don&#8217;t walk—on over to the
+<a class="reference external" href="http://www.pip-installer.org/en/latest/installing.html">pip website</a>
+and get that happy little tool installed before you do anything else.</p>
+<p>If available, Falcon will compile itself with Cython for an extra
+speed boost. The following will make sure Cython is installed first, and
+that you always have the latest and greatest</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ pip install --upgrade cython falcon
+</pre></div>
+</div>
+<p>If you are on PyPy, you won&#8217;t need Cython, of course:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ pip install --upgrade falcon
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-cython-on-os-x">
+<h2>Installing Cython on OS X<a class="headerlink" href="#installing-cython-on-os-x" title="Permalink to this headline">¶</a></h2>
+<p>In order to get Cython working on OS X Mavericks with Xcode 5.1, you will
+first need to set up Xcode Command Line Tools. Install them with
+this command:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ xcode-select --install
+</pre></div>
+</div>
+<p>The Xcode 5.1 CLang compiler treats unrecognized command-line options as
+errors; this can cause problems under Python 2.6, for example:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>clang: error: unknown argument: &#39;-mno-fused-madd&#39; [-Wunused-command-line-argument-hard-error-in-future]
+</pre></div>
+</div>
+<p>You can work around errors caused by unused arguments by setting some
+environment variables:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ export CFLAGS=-Qunused-arguments
+$ export CPPFLAGS=-Qunused-arguments
+$ pip install cython falcon
+</pre></div>
+</div>
+</div>
+<div class="section" id="wsgi-server">
+<h2>WSGI Server<a class="headerlink" href="#wsgi-server" title="Permalink to this headline">¶</a></h2>
+<p>Falcon speaks WSGI. If you want to actually serve a Falcon app, you will
+want a good WSGI server. Gunicorn and uWSGI are some of the more popular
+ones out there, but anything that can load a WSGI app will do. Gevent is
+an async library that works well with both Gunicorn and uWSGI.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ pip install --upgrade gevent [gunicorn|uwsgi]
+</pre></div>
+</div>
+</div>
+<div class="section" id="source-code">
+<h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<p>Falcon <a class="reference external" href="https://github.com/racker/falcon">lives on GitHub</a>, making the
+code easy to browse, download, fork, etc. Pull requests are always welcome! Also,
+please remember to star the project if it makes you happy.</p>
+<p>Once you have cloned the repro or downloaded a tarball from GitHub, you
+can install Falcon like this:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ cd falcon
+$ pip install .
+</pre></div>
+</div>
+<p>Or, if you want to edit the code, first fork the main repo, clone the fork
+to your desktop, and then run the following to install it using symbolic
+linking, so that when you change your code, the changes will be automagically
+available to your app without having to reinstall the package:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ cd falcon
+$ pip install -e .
+</pre></div>
+</div>
+<p>Did we mention we love pull requests? :)</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../index.html"><img class="logo" src="../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#install-from-pypi">Install from PyPI</a></li>
+<li><a class="reference internal" href="#installing-cython-on-os-x">Installing Cython on OS X</a></li>
+<li><a class="reference internal" href="#wsgi-server">WSGI Server</a></li>
+<li><a class="reference internal" href="#source-code">Source Code</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="intro.html" title="previous chapter">Introduction</a></li>
+      <li>Next: <a href="quickstart.html" title="next chapter">Quickstart</a></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

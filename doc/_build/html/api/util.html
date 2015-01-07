@@ -1,0 +1,601 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Utilities &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../index.html" />
+    <link rel="prev" title="Hooks" href="hooks.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="hooks.html" title="Hooks"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="utilities">
+<span id="util"></span><h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-falcon.util.uri">
+<span id="uri-functions"></span><h2>URI Functions<a class="headerlink" href="#module-falcon.util.uri" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="falcon.util.uri.decode">
+<tt class="descclassname">falcon.util.uri.</tt><tt class="descname">decode</tt><big>(</big><em>encoded_uri</em><big>)</big><a class="reference internal" href="../_modules/falcon/util/uri.html#decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.util.uri.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes percent-encoded characters in a URI or query string.</p>
+<p>This function models the behavior of urllib.parse.unquote_plus, but
+is faster. It is also more robust, in that it will decode escaped
+UTF-8 mutibyte sequences.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>encoded_uri</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An encoded URI (full or partial).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A decoded URL. Will be of type <em>unicode</em> on Python 2 IFF the
+URL contained escaped non-ASCII characters, in which case
+UTF-8 is assumed per RFC 3986.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="falcon.util.uri.encode">
+<tt class="descclassname">falcon.util.uri.</tt><tt class="descname">encode</tt><big>(</big><em>uri</em><big>)</big><a class="headerlink" href="#falcon.util.uri.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a full or relative URI according to RFC 3986.</p>
+<p>RFC 3986 defines a set of &#8220;unreserved&#8221; characters as well as a
+set of &#8220;reserved&#8221; characters used as delimiters. This function escapes
+all other &#8220;disallowed&#8221; characters by percent-encoding them.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This utility is faster in the average case than the similar
+<cite>quote</cite> function found in urlib. It also strives to be easier
+to use by assuming a sensible default of allowed characters.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uri</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URI or part of a URI to encode. If this is a wide
+string (i.e., <em>six.text_type</em>), it will be encoded to
+a UTF-8 byte array and any multibyte sequences will
+be percent-encoded as-is.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An escaped version of <cite>uri</cite>, where all disallowed characters
+have been percent-encoded.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="falcon.util.uri.encode_value">
+<tt class="descclassname">falcon.util.uri.</tt><tt class="descname">encode_value</tt><big>(</big><em>uri</em><big>)</big><a class="headerlink" href="#falcon.util.uri.encode_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a value string according to RFC 3986.</p>
+<p>Disallowed characters are percent-encoded in a way that models
+<tt class="docutils literal"><span class="pre">urllib.parse.quote(safe=&quot;~&quot;)</span></tt>. However, the Falcon function is faster
+in the average case than the similar <cite>quote</cite> function found in urlib.
+It also strives to be easier to use by assuming a sensible default
+of allowed characters.</p>
+<p>All reserved characters are lumped together into a single set of
+&#8220;delimiters&#8221;, and everything in that set is escaped.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">RFC 3986 defines a set of &#8220;unreserved&#8221; characters as well as a
+set of &#8220;reserved&#8221; characters used as delimiters.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uri</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URI fragment to encode. It is assumed not to cross delimiter
+boundaries, and so any reserved URI delimiter characters
+included in it will be escaped. If <cite>value</cite> is a wide
+string (i.e., <em>six.text_type</em>), it will be encoded to
+a UTF-8 byte array and any multibyte sequences will
+be percent-encoded as-is.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An escaped version of <cite>uri</cite>, where all disallowed characters
+have been percent-encoded.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="falcon.util.uri.parse_query_string">
+<tt class="descclassname">falcon.util.uri.</tt><tt class="descname">parse_query_string</tt><big>(</big><em>query_string</em><big>)</big><a class="reference internal" href="../_modules/falcon/util/uri.html#parse_query_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.util.uri.parse_query_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a query string into a dict.</p>
+<p>Query string parameters are assumed to use standard form-encoding. Only
+parameters with values are parsed. for example, given &#8220;foo=bar&amp;flag&#8221;,
+this function would ignore &#8220;flag&#8221;.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In addition to the standard HTML form-based method for specifying
+lists by repeating a given param multiple times, Falcon supports
+a more compact form in which the param may be given a single time
+but set to a list of comma-separated elements (e.g., &#8216;foo=a,b,c&#8217;).</p>
+<p class="last">The two different ways of specifying lists may not be mixed in
+a single query string for the same parameter.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query_string</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The query string to parse</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dict containing <tt class="docutils literal"><span class="pre">(name,</span> <span class="pre">value)</span></tt> tuples, one per query
+parameter. Note that <em>value</em> will be a string or list of
+strings.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">TypeError</span></tt> &#8211; 
+query_string was not a string or buffer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="falcon.testing.TestBase">
+<em class="property">class </em><tt class="descclassname">falcon.testing.</tt><tt class="descname">TestBase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#falcon.testing.TestBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extends <em>testtools.TestCase</em> to support WSGI integration testing.</p>
+<p><cite>TestBase</cite> provides a base class that provides some extra plumbing to
+help simulate WSGI calls without having to actually host your API
+in a server.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If <em>testtools</em> is not available, <em>unittest</em> is used instead.</p>
+</div>
+<dl class="attribute">
+<dt id="falcon.util.uri.TestBase.api">
+<tt class="descname">api</tt><em class="property"> falcon.API</em><a class="headerlink" href="#falcon.util.uri.TestBase.api" title="Permalink to this definition">¶</a></dt>
+<dd><p>An API instance to target when simulating
+requests. Defaults to <tt class="docutils literal"><span class="pre">falcon.API()</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.TestBase.srmock">
+<tt class="descname">srmock</tt><em class="property"> falcon.testing.StartResponseMock</em><a class="headerlink" href="#falcon.util.uri.TestBase.srmock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a callable
+that simulates the behavior of the <em>start_response</em> argument
+that the server would normally pass into the WSGI app. The
+mock object captures various information from the app&#8217;s
+response to the simulated request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.TestBase.test_route">
+<tt class="descname">test_route</tt><em class="property"> str</em><a class="headerlink" href="#falcon.util.uri.TestBase.test_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple, generated path that a test
+can use to add a route to the API.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.testing.TestBase.setUp">
+<tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#falcon.testing.TestBase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializer, unittest-style</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.testing.TestBase.simulate_request">
+<tt class="descname">simulate_request</tt><big>(</big><em>path</em>, <em>decode=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#falcon.testing.TestBase.simulate_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates a request to <cite>self.api</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The path to request.</li>
+<li><strong>decode</strong> (<em>str, optional</em>) &#8211; If this is set to a character encoding,
+such as &#8220;utf-8&#8221;, <cite>simulate_request</cite> will assume the
+response is a single byte string, and will decode it as the
+result of the request, rather than simply returning the
+standard WSGI iterable.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as those defined for
+<cite>falcon.testing.create_environ</cite>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.testing.TestBase.tearDown">
+<tt class="descname">tearDown</tt><big>(</big><big>)</big><a class="headerlink" href="#falcon.testing.TestBase.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destructor, unittest-style</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="falcon.testing.TestResource">
+<em class="property">class </em><tt class="descclassname">falcon.testing.</tt><tt class="descname">TestResource</tt><a class="headerlink" href="#falcon.testing.TestResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mock resource for integration testing.</p>
+<p>This class implements the <em>on_get</em> responder, captures
+request data, and sets response body and headers.</p>
+<p>Child classes may add additional methods and attributes as
+needed.</p>
+<dl class="attribute">
+<dt id="falcon.util.uri.TestResource.sample_status">
+<tt class="descname">sample_status</tt><em class="property"> str</em><a class="headerlink" href="#falcon.util.uri.TestResource.sample_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP status to set in the response</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.TestResource.sample_body">
+<tt class="descname">sample_body</tt><em class="property"> str</em><a class="headerlink" href="#falcon.util.uri.TestResource.sample_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Random body string to set in the response</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.TestResource.resp_headers">
+<tt class="descname">resp_headers</tt><em class="property"> dict</em><a class="headerlink" href="#falcon.util.uri.TestResource.resp_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample headers to use in the response</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.TestResource.req">
+<tt class="descname">req</tt><em class="property"> falcon.Request</em><a class="headerlink" href="#falcon.util.uri.TestResource.req" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request object passed into the <em>on_get</em>
+responder</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.TestResource.resp">
+<tt class="descname">resp</tt><em class="property"> falcon.Response</em><a class="headerlink" href="#falcon.util.uri.TestResource.resp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response object passed into the <em>on_get</em>
+responder</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.TestResource.kwargs">
+<tt class="descname">kwargs</tt><em class="property"> dict</em><a class="headerlink" href="#falcon.util.uri.TestResource.kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keyword arguments passed into the <em>on_get</em>
+responder, if any</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.TestResource.called">
+<tt class="descname">called</tt><em class="property"> bool</em><a class="headerlink" href="#falcon.util.uri.TestResource.called" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if <em>on_get</em> was ever called; False otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.testing.TestResource.on_get">
+<tt class="descname">on_get</tt><big>(</big><em>req</em>, <em>resp</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#falcon.testing.TestResource.on_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>GET responder.</p>
+<p>Captures req, resp, and kwargs. Also sets up a sample response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>req</strong> &#8211; Falcon <cite>Request</cite> instance</li>
+<li><strong>resp</strong> &#8211; Falcon <cite>Response</cite> instance</li>
+<li><strong>kwargs</strong> &#8211; URI template <em>name=value</em> pairs, if any, along with
+any extra args injected by middleware</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="falcon.testing.StartResponseMock">
+<em class="property">class </em><tt class="descclassname">falcon.testing.</tt><tt class="descname">StartResponseMock</tt><a class="headerlink" href="#falcon.testing.StartResponseMock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mock object that represents a WSGI &#8220;start_response&#8221; callable.</p>
+<dl class="attribute">
+<dt id="falcon.util.uri.StartResponseMock.call_count">
+<tt class="descname">call_count</tt><em class="property"> int</em><a class="headerlink" href="#falcon.util.uri.StartResponseMock.call_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of times start_response was called.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.StartResponseMock.status">
+<tt class="descname">status</tt><em class="property"> str</em><a class="headerlink" href="#falcon.util.uri.StartResponseMock.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP status line, e.g. &#8220;785 TPS Cover Sheet
+not attached&#8221;.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.StartResponseMock.headers">
+<tt class="descname">headers</tt><em class="property"> list</em><a class="headerlink" href="#falcon.util.uri.StartResponseMock.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raw headers list passed to <cite>start_response</cite>,
+per PEP-333.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.util.uri.StartResponseMock.headers_dict">
+<tt class="descname">headers_dict</tt><em class="property"> dict</em><a class="headerlink" href="#falcon.util.uri.StartResponseMock.headers_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Headers as a case-insensitive
+dictionary, instead of a list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.testing.StartResponseMock.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>status</em>, <em>headers</em>, <em>exc_info=None</em><big>)</big><a class="headerlink" href="#falcon.testing.StartResponseMock.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the PEP-3333 <cite>start_response</cite> protocol.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-falcon.testing"></span><dl class="function">
+<dt id="falcon.testing.httpnow">
+<tt class="descclassname">falcon.testing.</tt><tt class="descname">httpnow</tt><big>(</big><big>)</big><a class="headerlink" href="#falcon.testing.httpnow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current UTC time as an RFC 1123 date.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An HTTP date string, e.g., &#8220;Tue, 15 Nov 1994 12:45:26 GMT&#8221;.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="falcon.testing.rand_string">
+<tt class="descclassname">falcon.testing.</tt><tt class="descname">rand_string</tt><big>(</big><em>min</em>, <em>max</em><big>)</big><a class="headerlink" href="#falcon.testing.rand_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a randomly-generated string, of a random length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>min</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Minimum string length to return, inclusive</li>
+<li><strong>max</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Maximum string length to return, inclusive</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="falcon.testing.create_environ">
+<tt class="descclassname">falcon.testing.</tt><tt class="descname">create_environ</tt><big>(</big><em>path='/'</em>, <em>query_string=''</em>, <em>protocol='HTTP/1.1'</em>, <em>port='80'</em>, <em>headers=None</em>, <em>app=''</em>, <em>body=''</em>, <em>method='GET'</em>, <em>wsgierrors=None</em>, <em>file_wrapper=None</em><big>)</big><a class="headerlink" href="#falcon.testing.create_environ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a mock PEP-3333 environ dict for simulating WSGI requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<em>str, optional</em>) &#8211; The path for the request (default &#8216;/&#8217;)</li>
+<li><strong>query_string</strong> (<em>str, optional</em>) &#8211; The query string to simulate, without a
+leading &#8216;?&#8217; (default &#8216;&#8217;)</li>
+<li><strong>protocol</strong> (<em>str, optional</em>) &#8211; The HTTP protocol to simulate
+(default &#8216;HTTP/1.1&#8217;)</li>
+<li><strong>port</strong> (<em>str, optional</em>) &#8211; The TCP port to simulate (default &#8216;80&#8217;)</li>
+<li><strong>headers</strong> (<em>dict or list, optional</em>) &#8211; Headers as a dict or an
+iterable collection of <tt class="docutils literal"><span class="pre">(key,</span> <span class="pre">value)</span></tt> tuples</li>
+<li><strong>app</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Value for the SCRIPT_NAME environ variable, described in
+PEP-333: &#8216;The initial portion of the request URL&#8217;s &#8220;path&#8221; that
+corresponds to the application object, so that the application
+knows its virtual &#8220;location&#8221;. This may be an empty string, if the
+application corresponds to the &#8220;root&#8221; of the server.&#8217; (default &#8216;&#8217;)</li>
+<li><strong>body</strong> (<em>str or unicode</em>) &#8211; The body of the request (default &#8216;&#8217;)</li>
+<li><strong>method</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The HTTP method to use (default &#8216;GET&#8217;)</li>
+<li><strong>wsgierrors</strong> (<a class="reference external" href="http://docs.python.org/library/io.html#module-io" title="(in Python v2.7)"><em>io</em></a>) &#8211; The stream to use as wsgierrors (default sys.stderr)</li>
+<li><strong>file_wrapper</strong> &#8211; Callable that returns an iterable, to be used as
+the value for &#8216;wsgi.file_wrapper&#8217; in the environ.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-falcon.util">
+<span id="miscellaneous"></span><h2>Miscellaneous<a class="headerlink" href="#module-falcon.util" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="falcon.util.deprecated">
+<tt class="descclassname">falcon.util.</tt><tt class="descname">deprecated</tt><big>(</big><em>instructions</em><big>)</big><a class="headerlink" href="#falcon.util.deprecated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flags a method as deprecated.</p>
+<p>This function returns a decorator which can be used to mark deprecated
+functions. Applying this decorator will result in a warning being
+emitted when the function is used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instructions</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Specific guidance for the developer, e.g.:
+&#8220;Please migrate to add_proxy(...)&#8221;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="falcon.util.dt_to_http">
+<tt class="descclassname">falcon.util.</tt><tt class="descname">dt_to_http</tt><big>(</big><em>dt</em><big>)</big><a class="headerlink" href="#falcon.util.dt_to_http" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a datetime instance to an HTTP date string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dt</strong> (<a class="reference external" href="http://docs.python.org/library/datetime.html#module-datetime" title="(in Python v2.7)"><em>datetime</em></a>) &#8211; A <em>datetime.datetime</em> instance, assumed to be UTC.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An RFC 1123 date string, e.g.:
+&#8220;Tue, 15 Nov 1994 12:45:26 GMT&#8221;.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="falcon.util.http_date_to_dt">
+<tt class="descclassname">falcon.util.</tt><tt class="descname">http_date_to_dt</tt><big>(</big><em>http_date</em><big>)</big><a class="headerlink" href="#falcon.util.http_date_to_dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an HTTP date string to a datetime instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>http_date</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An RFC 1123 date string, e.g.:
+&#8220;Tue, 15 Nov 1994 12:45:26 GMT&#8221;.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A UTC datetime instance corresponding to the given
+HTTP date.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">datetime</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="falcon.util.to_query_str">
+<tt class="descclassname">falcon.util.</tt><tt class="descname">to_query_str</tt><big>(</big><em>params</em><big>)</big><a class="headerlink" href="#falcon.util.to_query_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a dict of params to a query string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>params</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A dictionary of parameters, where each key is a
+parameter name, and each value is either a string or
+something that can be converted into a string. If <cite>params</cite>
+is a list, it will be converted to a comma-delimited string
+of values (e.g., &#8220;thing=1,2,3&#8221;)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A URI query string including the &#8221;?&#8221; prefix, or an empty string
+if no params are given (the dict is empty).</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../index.html"><img class="logo" src="../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Utilities</a><ul>
+<li><a class="reference internal" href="#module-falcon.util.uri">URI Functions</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+<li><a class="reference internal" href="#module-falcon.util">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="hooks.html" title="previous chapter">Hooks</a></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

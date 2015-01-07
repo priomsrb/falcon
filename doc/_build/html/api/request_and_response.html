@@ -1,0 +1,1020 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Req/Resp &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../index.html" />
+    <link rel="next" title="Status Codes" href="status.html" />
+    <link rel="prev" title="API Class" href="api.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="status.html" title="Status Codes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="API Class"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="req-resp">
+<span id="request"></span><h1>Req/Resp<a class="headerlink" href="#req-resp" title="Permalink to this headline">¶</a></h1>
+<p>Instances of the Request and Response classes are passed into responders as the second
+and third arguments, respectively.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">falcon</span>
+
+
+<span class="k">class</span> <span class="nc">Resource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">on_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">):</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s">&#39;{&quot;message&quot;: &quot;Hello world!&quot;}&#39;</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h2>Request<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="falcon.Request">
+<em class="property">class </em><tt class="descclassname">falcon.</tt><tt class="descname">Request</tt><big>(</big><em>env</em><big>)</big><a class="headerlink" href="#falcon.Request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a client&#8217;s HTTP request.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><cite>Request</cite> is not meant to be instantiated directly by responders.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>env</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A WSGI environment dict passed in from the server. See
+also the PEP-3333 spec.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="Request.protocol">
+<tt class="descname">protocol</tt><em class="property"> str</em><a class="headerlink" href="#Request.protocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Either &#8216;http&#8217; or &#8216;https&#8217;.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.method">
+<tt class="descname">method</tt><em class="property"> str</em><a class="headerlink" href="#Request.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP method requested (e.g., GET, POST, etc.)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.user_agent">
+<tt class="descname">user_agent</tt><em class="property"> str</em><a class="headerlink" href="#Request.user_agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the User-Agent header, or <em>None</em> if the
+header is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.app">
+<tt class="descname">app</tt><em class="property"> str</em><a class="headerlink" href="#Request.app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the WSGI app (if using WSGI&#8217;s notion of virtual
+hosting).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.env">
+<tt class="descname">env</tt><em class="property"> dict</em><a class="headerlink" href="#Request.env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the WSGI <em>environ</em> dict passed in from the
+server. See also PEP-3333.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.context">
+<tt class="descname">context</tt><em class="property"> dict</em><a class="headerlink" href="#Request.context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary to hold any data about the request which is
+specific to your app (e.g. session object). Falcon itself will
+not interact with this attribute after it has been initialized.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.context_type">
+<tt class="descname">context_type</tt><em class="property"> None</em><a class="headerlink" href="#Request.context_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom callable/type to use for initializing the
+<tt class="docutils literal"><span class="pre">context</span></tt> attribute.  To change this value so that <tt class="docutils literal"><span class="pre">context</span></tt>
+is initialized to the type of your choice (e.g. OrderedDict), you
+will need to extend this class and pass that new type to the
+<tt class="docutils literal"><span class="pre">request_type</span></tt> argument of <tt class="docutils literal"><span class="pre">falcon.API()</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.uri">
+<tt class="descname">uri</tt><em class="property"> str</em><a class="headerlink" href="#Request.uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fully-qualified URI for the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.url">
+<tt class="descname">url</tt><em class="property"> str</em><a class="headerlink" href="#Request.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias for <tt class="docutils literal"><span class="pre">uri</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.relative_uri">
+<tt class="descname">relative_uri</tt><em class="property"> str</em><a class="headerlink" href="#Request.relative_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>The path + query string portion of the full URI.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.path">
+<tt class="descname">path</tt><em class="property"> str</em><a class="headerlink" href="#Request.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path portion of the request URL (not including query
+string).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.query_string">
+<tt class="descname">query_string</tt><em class="property"> str</em><a class="headerlink" href="#Request.query_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query string portion of the request URL, without
+the preceding &#8216;?&#8217; character.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.accept">
+<tt class="descname">accept</tt><em class="property"> str</em><a class="headerlink" href="#Request.accept" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the Accept header, or &#8216;<em>/</em>&#8216; if the header is
+missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.auth">
+<tt class="descname">auth</tt><em class="property"> str</em><a class="headerlink" href="#Request.auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the Authorization header, or <em>None</em> if the header
+is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.client_accepts_json">
+<tt class="descname">client_accepts_json</tt><em class="property"> bool</em><a class="headerlink" href="#Request.client_accepts_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the Accept header includes JSON,
+otherwise False.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.client_accepts_msgpack">
+<tt class="descname">client_accepts_msgpack</tt><em class="property"> bool</em><a class="headerlink" href="#Request.client_accepts_msgpack" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the Accept header includes
+msgpack, otherwise False.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.client_accepts_xml">
+<tt class="descname">client_accepts_xml</tt><em class="property"> bool</em><a class="headerlink" href="#Request.client_accepts_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the Accept header includes XML,
+otherwise False.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.content_type">
+<tt class="descname">content_type</tt><em class="property"> str</em><a class="headerlink" href="#Request.content_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the Content-Type header, or <em>None</em> if
+the header is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.content_length">
+<tt class="descname">content_length</tt><em class="property"> int</em><a class="headerlink" href="#Request.content_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the Content-Length header converted
+to an int, or <em>None</em> if the header is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.stream">
+<tt class="descname">stream</tt><a class="headerlink" href="#Request.stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>File-like object for reading the body of the request, if any.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If an HTML form is POSTed to the API using the
+<em>application/x-www-form-urlencoded</em> media type, Falcon
+will consume <cite>stream</cite> in order to parse the parameters
+and merge them into the query string parameters. In this
+case, the stream will be left at EOF.</p>
+<p>Note also that the character encoding for fields, before
+percent-encoding non-ASCII bytes, is assumed to be
+UTF-8. The special &#8220;_charset_&#8221; field is ignored if present.</p>
+<p class="last">Falcon expects form-encoded request bodies to be
+encoded according to the standard W3C algorithm (see
+also <a class="reference external" href="http://goo.gl/6rlcux">http://goo.gl/6rlcux</a>).</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.date">
+<tt class="descname">date</tt><em class="property"> datetime</em><a class="headerlink" href="#Request.date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the Date header, converted to a
+<cite>datetime.datetime</cite> instance. The header value is assumed to
+conform to RFC 1123.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.expect">
+<tt class="descname">expect</tt><em class="property"> str</em><a class="headerlink" href="#Request.expect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the Expect header, or <em>None</em> if the
+header is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.range">
+<tt class="descname">range</tt><em class="property"> tuple of int</em><a class="headerlink" href="#Request.range" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 2-member tuple parsed from the value of the
+Range header.</p>
+<p>The two members correspond to the first and last byte
+positions of the requested resource, inclusive. Negative
+indices indicate offset from the end of the resource,
+where -1 is the last byte, -2 is the second-to-last byte,
+and so forth.</p>
+<p>Only continous ranges are supported (e.g., &#8220;bytes=0-0,-1&#8221; would
+result in an HTTPBadRequest exception when the attribute is
+accessed.)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.if_match">
+<tt class="descname">if_match</tt><em class="property"> str</em><a class="headerlink" href="#Request.if_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the If-Match header, or <em>None</em> if the
+header is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.if_none_match">
+<tt class="descname">if_none_match</tt><em class="property"> str</em><a class="headerlink" href="#Request.if_none_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the If-None-Match header, or <em>None</em>
+if the header is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.if_modified_since">
+<tt class="descname">if_modified_since</tt><em class="property"> str</em><a class="headerlink" href="#Request.if_modified_since" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the If-Modified-Since header, or
+None if the header is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.if_unmodified_since">
+<tt class="descname">if_unmodified_since</tt><em class="property"> str</em><a class="headerlink" href="#Request.if_unmodified_since" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the If-Unmodified-Sinc header,
+or <em>None</em> if the header is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.if_range">
+<tt class="descname">if_range</tt><em class="property"> str</em><a class="headerlink" href="#Request.if_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the If-Range header, or <em>None</em> if the
+header is missing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.headers">
+<tt class="descname">headers</tt><em class="property"> dict</em><a class="headerlink" href="#Request.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raw HTTP headers from the request with
+canonical dash-separated names. Parsing all the headers
+to create this dict is done the first time this attribute
+is accessed. This parsing can be costly, so unless you
+need all the headers in this format, you should use the
+<tt class="docutils literal"><span class="pre">get_header</span></tt> method or one of the convenience attributes
+instead, to get a value for a specific header.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Request.params">
+<tt class="descname">params</tt><em class="property"> dict</em><a class="headerlink" href="#Request.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mapping of request query parameter names to their
+values.  Where the parameter appears multiple times in the query
+string, the value mapped to that parameter key will be a list of
+all the values in the order seen.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Request.client_accepts">
+<tt class="descname">client_accepts</tt><big>(</big><em>media_type</em><big>)</big><a class="headerlink" href="#falcon.Request.client_accepts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines whether or not the client accepts a given media type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>media_type</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An Internet media type to check.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the client has indicated in the Accept header that
+it accepts the specified media type. Otherwise, returns
+False.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Request.client_prefers">
+<tt class="descname">client_prefers</tt><big>(</big><em>media_types</em><big>)</big><a class="headerlink" href="#falcon.Request.client_prefers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the client&#8217;s preferred media type given several choices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>media_types</strong> (<em>iterable of str</em>) &#8211; One or more Internet media types
+from which to choose the client&#8217;s preferred type. This value
+<strong>must</strong> be an iterable collection of strings.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The client&#8217;s preferred media type, based on the Accept
+header. Returns <em>None</em> if the client does not accept any
+of the given types.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Request.get_header">
+<tt class="descname">get_header</tt><big>(</big><em>name</em>, <em>required=False</em><big>)</big><a class="headerlink" href="#falcon.Request.get_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a header value as a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Header name, case-insensitive (e.g., &#8216;Content-Type&#8217;)</li>
+<li><strong>required</strong> (<em>bool, optional</em>) &#8211; Set to True to raise HttpBadRequest
+instead of returning gracefully when the header is not found
+(default False).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The value of the specified header if it exists, or <em>None</em> if
+the header is not found and is not required.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-exc docutils literal"><span class="pre">HTTPBadRequest</span></tt> &#8211; 
+The header was not found in the request, but
+it was required.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Request.get_param">
+<tt class="descname">get_param</tt><big>(</big><em>name</em>, <em>required=False</em>, <em>store=None</em><big>)</big><a class="headerlink" href="#falcon.Request.get_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value of a query string parameter as a string.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If an HTML form is POSTed to the API using the
+<em>application/x-www-form-urlencoded</em> media type, the
+parameters from the request body will be merged into
+the query string parameters.</p>
+<p class="last">If a key appears more than once in the form data, one of the
+values will be returned as a string, but it is undefined which
+one.  Use .get_param_as_list() to retrieve all the values.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If a query parameter is assigned a comma-separated list of
+values (e.g., foo=a,b,c) then only one of the values will be
+returned, and it is undefined which one. Use
+.get_param_as_list() to retrieve all the values.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Parameter name, case-sensitive (e.g., &#8216;sort&#8217;)</li>
+<li><strong>required</strong> (<em>bool, optional</em>) &#8211; Set to True to raise HTTPBadRequest
+instead of returning gracefully when the parameter is not
+found (default False)</li>
+<li><strong>store</strong> (<em>dict, optional</em>) &#8211; A dict-like object in which to place the
+value of the param, but only if the param is found.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The value of the param as a string, or <em>None</em> if param is
+not found and is not required.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">string</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-exc docutils literal"><span class="pre">HTTPBadRequest</span></tt> &#8211; 
+The param was not found in the request, but was
+required.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Request.get_param_as_bool">
+<tt class="descname">get_param_as_bool</tt><big>(</big><em>name</em>, <em>required=False</em>, <em>store=None</em><big>)</big><a class="headerlink" href="#falcon.Request.get_param_as_bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value of a query string parameter as a boolean</p>
+<p>The following bool-like strings are supported:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TRUE_STRINGS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;true&#39;</span><span class="p">,</span> <span class="s">&#39;True&#39;</span><span class="p">,</span> <span class="s">&#39;yes&#39;</span><span class="p">)</span>
+<span class="n">FALSE_STRINGS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;false&#39;</span><span class="p">,</span> <span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;no&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Parameter name, case-sensitive (e.g., &#8216;limit&#8217;)</li>
+<li><strong>required</strong> (<em>bool, optional</em>) &#8211; Set to True to raise HTTPBadRequest
+instead of returning gracefully when the parameter is not
+found or is not a recognized bool-ish string (default False).</li>
+<li><strong>store</strong> (<em>dict, optional</em>) &#8211; A dict-like object in which to place the
+value of the param, but only if the param is found (default
+<em>None</em>).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The value of the param if it is found and can be converted
+to a boolean. If the param is not found, returns <em>None</em> unless
+required is True.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-exc docutils literal"><span class="pre">HTTPBadRequest</span></tt> &#8211; 
+The param was not found in the request, even though
+it was required to be there.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Request.get_param_as_int">
+<tt class="descname">get_param_as_int</tt><big>(</big><em>name</em>, <em>required=False</em>, <em>min=None</em>, <em>max=None</em>, <em>store=None</em><big>)</big><a class="headerlink" href="#falcon.Request.get_param_as_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value of a query string parameter as an int.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Parameter name, case-sensitive (e.g., &#8216;limit&#8217;)</li>
+<li><strong>required</strong> (<em>bool, optional</em>) &#8211; Set to True to raise HTTPBadRequest
+instead of returning gracefully when the parameter is not
+found or is not an integer (default False).</li>
+<li><strong>min</strong> (<em>int, optional</em>) &#8211; Set to the minimum value allowed for this
+param. If the param is found and it is less than min, an
+HTTPError is raised.</li>
+<li><strong>max</strong> (<em>int, optional</em>) &#8211; Set to the maximum value allowed for this
+param. If the param is found and its value is greater than
+max, an HTTPError is raised.</li>
+<li><strong>store</strong> (<em>dict, optional</em>) &#8211; A dict-like object in which to place the
+value of the param, but only if the param is found (default
+<em>None</em>).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The value of the param if it is found and can be converted to
+an integer. If the param is not found, returns <em>None</em>, unless
+<tt class="docutils literal"><span class="pre">required</span></tt> is True.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-exc docutils literal"><span class="pre">HTTPBadRequest</span></tt> &#8211; 
+The param was not found in the request, even though
+it was required to be there. Also raised if the param&#8217;s value
+falls outside the given interval, i.e., the value must be in
+the interval: min &lt;= value &lt;= max to avoid triggering an error.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Request.get_param_as_list">
+<tt class="descname">get_param_as_list</tt><big>(</big><em>name</em>, <em>transform=None</em>, <em>required=False</em>, <em>store=None</em><big>)</big><a class="headerlink" href="#falcon.Request.get_param_as_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value of a query string parameter as a list.</p>
+<p>List items must be comma-separated or must be provided
+as multiple instances of the same param in the query string
+ala <em>application/x-www-form-urlencoded</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Parameter name, case-sensitive (e.g., &#8216;limit&#8217;)</li>
+<li><strong>transform</strong> (<em>callable, optional</em>) &#8211; An optional transform function
+that takes as input each element in the list as a string and
+outputs a transformed element for inclusion in the list that
+will be returned. For example, passing the int function will
+transform list items into numbers.</li>
+<li><strong>required</strong> (<em>bool, optional</em>) &#8211; Set to True to raise HTTPBadRequest
+instead of returning gracefully when the parameter is not
+found or is not an integer (default False)</li>
+<li><strong>store</strong> (<em>dict, optional</em>) &#8211; A dict-like object in which to place the
+value of the param, but only if the param is found (default
+<em>None</em>).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>The value of the param if it is found. Otherwise, returns
+<em>None</em> unless required is True. Empty list elements will be
+discarded. For example a query string containing this:</p>
+<div class="highlight-python"><div class="highlight"><pre>things=1,,3
+</pre></div>
+</div>
+<p>or a query string containing this:</p>
+<div class="highlight-python"><div class="highlight"><pre>things=1&amp;things=&amp;things=3
+</pre></div>
+</div>
+<p>would both result in:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-exc docutils literal"><span class="pre">HTTPBadRequest</span></tt> &#8211; 
+The param was not found in the request, but was
+required.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Request.log_error">
+<tt class="descname">log_error</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#falcon.Request.log_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an error message to the server&#8217;s log.</p>
+<p>Prepends timestamp and request info to message, and writes the
+result out to the WSGI server&#8217;s error stream (<cite>wsgi.error</cite>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; A string describing the problem. If a byte-string
+it is simply written out as-is. Unicode strings will be
+converted to UTF-8.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="response">
+<h2>Response<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="falcon.Response">
+<em class="property">class </em><tt class="descclassname">falcon.</tt><tt class="descname">Response</tt><a class="headerlink" href="#falcon.Response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents an HTTP response to a client request.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><cite>Response</cite> is not meant to be instantiated directly by responders.</p>
+</div>
+<dl class="attribute">
+<dt id="Response.status">
+<tt class="descname">status</tt><em class="property"> str</em><a class="headerlink" href="#Response.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP status line, such as &#8220;200 OK&#8221;</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Falcon provides a number of constants for common status
+codes. They all start with the <tt class="docutils literal"><span class="pre">HTTP_</span></tt> prefix, as in:
+<tt class="docutils literal"><span class="pre">falcon.HTTP_204</span></tt>.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Response.body">
+<tt class="descname">body</tt><em class="property"> str or unicode</em><a class="headerlink" href="#Response.body" title="Permalink to this definition">¶</a></dt>
+<dd><p>String representing response content. If
+Unicode, Falcon will encode as UTF-8 in the response. If
+data is already a byte string, use the data attribute
+instead (it&#8217;s faster).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Response.body_encoded">
+<tt class="descname">body_encoded</tt><em class="property"> bytes</em><a class="headerlink" href="#Response.body_encoded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a UTF-8 encoded version of <cite>body</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Response.data">
+<tt class="descname">data</tt><em class="property"> bytes</em><a class="headerlink" href="#Response.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Byte string representing response content.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Under Python 2.x, if your content is of type <em>str</em>, setting
+this rather than body will be most efficient. However, if
+your text is of type <em>unicode</em>, you will want to use the
+<em>body</em> attribute instead.</p>
+<p class="last">Under Python 3.x, the 2.x <em>str</em> type can be thought of as
+having been replaced with what was once the <em>unicode</em> type,
+and so you will want to use the <cite>body</cite> attribute to
+ensure Unicode characters are properly encoded in the
+response body.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Response.stream">
+<tt class="descname">stream</tt><a class="headerlink" href="#Response.stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Either a file-like object with a <em>read()</em> method that takes
+an optional size argument and returns a block of bytes, or an
+iterable object, representing response content, and yielding
+blocks as byte strings. Falcon will use wsgi.file_wrapper, if
+provided by the WSGI server, in order to efficiently serve
+file-like objects.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Response.stream_len">
+<tt class="descname">stream_len</tt><em class="property"> int</em><a class="headerlink" href="#Response.stream_len" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expected length of <em>stream</em> (e.g., file size).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Response.add_link">
+<tt class="descname">add_link</tt><big>(</big><em>target</em>, <em>rel</em>, <em>title=None</em>, <em>title_star=None</em>, <em>anchor=None</em>, <em>hreflang=None</em>, <em>type_hint=None</em><big>)</big><a class="headerlink" href="#falcon.Response.add_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a link header to the response.</p>
+<p>See also: <a class="reference external" href="https://tools.ietf.org/html/rfc5988">https://tools.ietf.org/html/rfc5988</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Calling this method repeatedly will cause each link to be
+appended to the Link header value, separated by commas.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">So-called &#8220;link-extension&#8221; elements, as defined by RFC 5988,
+are not yet supported. See also Issue #288.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>target</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Target IRI for the resource identified by the
+link. Will be converted to a URI, if necessary, per
+RFC 3987, Section 3.1.</li>
+<li><strong>rel</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Relation type of the link, such as &#8220;next&#8221; or
+&#8220;bookmark&#8221;. See also <a class="reference external" href="http://goo.gl/618GHr">http://goo.gl/618GHr</a> for a list
+of registered link relation types.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Kwargs:</dt>
+<dd><dl class="first last docutils">
+<dt>title (str): Human-readable label for the destination of</dt>
+<dd>the link (default None). If the title includes non-ASCII
+characters, you will need to use <cite>title_star</cite> instead, or
+provide both a US-ASCII version using <cite>title</cite> and a
+Unicode version using <cite>title_star</cite>.</dd>
+<dt>title_star (tuple of str): Localized title describing the</dt>
+<dd><p class="first">destination of the link (default None). The value must be a
+two-member tuple in the form of (<em>language-tag</em>, <em>text</em>),
+where <em>language-tag</em> is a standard language identifier as
+defined in RFC 5646, Section 2.1, and <em>text</em> is a Unicode
+string.</p>
+<dl class="last docutils">
+<dt>Note:</dt>
+<dd><em>language-tag</em> may be an empty string, in which case the
+client will assume the language from the general context
+of the current request.</dd>
+<dt>Note:</dt>
+<dd><em>text</em> will always be encoded as UTF-8. If the string
+contains non-ASCII characters, it should be passed as
+a &#8220;unicode&#8221; type string (requires the &#8216;u&#8217; prefix in
+Python 2).</dd>
+</dl>
+</dd>
+<dt>anchor (str): Override the context IRI with a different URI</dt>
+<dd>(default None). By default, the context IRI for the link is
+simply the IRI of the requested resource. The value
+provided may be a relative URI.</dd>
+<dt>hreflang (str or iterable): Either a single <em>language-tag</em>, or</dt>
+<dd>a list or tuple of such tags to provide a hint to the client
+as to the language of the result of following the link. A
+list of tags may be given in order to indicate to the
+client that the target resource is available in multiple
+languages.</dd>
+<dt>type_hint(str): Provides a hint as to the media type of the</dt>
+<dd>result of dereferencing the link (default None). As noted
+in RFC 5988, this is only a hint and does not override the
+Content-Type header returned when the link is followed.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Response.append_header">
+<tt class="descname">append_header</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="headerlink" href="#falcon.Response.append_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or append a header for this response to a given value.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Calling this method will append any existing value using comma
+separation. Please ensure the header type supports this.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Header name to set (case-insensitive). Must be of
+type str or StringType, and only character values 0x00
+through 0xFF may be used on platforms that use wide
+characters.</li>
+<li><strong>value</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Value for the header. Must be of type str or
+StringType, and only character values 0x00 through 0xFF
+may be used on platforms that use wide characters.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.Response.cache_control">
+<tt class="descname">cache_control</tt><a class="headerlink" href="#falcon.Response.cache_control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Cache-Control header.</p>
+<p>Used to set a list of cache directives to use as the value of the
+Cache-Control header. The list will be joined with &#8221;, &#8221; to produce
+the value for the header.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.Response.content_location">
+<tt class="descname">content_location</tt><a class="headerlink" href="#falcon.Response.content_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Content-Location header.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.Response.content_range">
+<tt class="descname">content_range</tt><a class="headerlink" href="#falcon.Response.content_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>A tuple to use in constructing a value for the Content-Range header.</p>
+<p>The tuple has the form <tt class="docutils literal"><span class="pre">(start,</span> <span class="pre">end,</span> <span class="pre">length)</span></tt>, where <em>start</em> and
+<em>end</em> designate the byte range (inclusive), and <em>length</em> is the
+total number of bytes, or &#8216;*&#8217; if unknown. You may use <em>int</em>&#8216;s for
+these numbers (no need to convert to a <em>str</em> first).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You only need to use the alternate form, &#8220;bytes <a href="#id2"><span class="problematic" id="id3">*</span></a>/1234&#8221;, for
+responses that use the status &#8220;416 Range Not Satisfiable&#8221;. In this
+case, raising falcon.HTTPRangeNotSatisfiable will do the right
+thing.</p>
+<p class="last">See also: <a class="reference external" href="http://goo.gl/Iglhp">http://goo.gl/Iglhp</a></p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.Response.content_type">
+<tt class="descname">content_type</tt><a class="headerlink" href="#falcon.Response.content_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Content-Type header.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.Response.etag">
+<tt class="descname">etag</tt><a class="headerlink" href="#falcon.Response.etag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the ETag header.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.Response.last_modified">
+<tt class="descname">last_modified</tt><a class="headerlink" href="#falcon.Response.last_modified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Last-Modified header. Set to a datetime (UTC) instance.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Falcon will format the datetime as an HTTP date.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.Response.location">
+<tt class="descname">location</tt><a class="headerlink" href="#falcon.Response.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Location header.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.Response.retry_after">
+<tt class="descname">retry_after</tt><a class="headerlink" href="#falcon.Response.retry_after" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Retry-After header.</p>
+<p>The expected value is an integral number of seconds to use as the
+value for the header. The HTTP-date syntax is not supported.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Response.set_header">
+<tt class="descname">set_header</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="headerlink" href="#falcon.Response.set_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a header for this response to a given value.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Calling this method overwrites the existing value, if any.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Header name to set (case-insensitive). Must be of
+type str or StringType, and only character values 0x00
+through 0xFF may be used on platforms that use wide
+characters.</li>
+<li><strong>value</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Value for the header. Must be of type str or
+StringType, and only character values 0x00 through 0xFF
+may be used on platforms that use wide characters.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Response.set_headers">
+<tt class="descname">set_headers</tt><big>(</big><em>headers</em><big>)</big><a class="headerlink" href="#falcon.Response.set_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set several headers at once.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Calling this method overwrites existing values, if any.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>headers</strong> (<em>dict or list</em>) &#8211; <p>A dictionary of header names and values
+to set, or list of (name, value) tuples. Both names and
+values must be of type str or StringType, and only character
+values 0x00 through 0xFF may be used on platforms that use
+wide characters.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Falcon can process a list of tuples slightly faster
+than a dict.</p>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> &#8211; 
+headers was not a dictionary or list of tuples.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.Response.set_stream">
+<tt class="descname">set_stream</tt><big>(</big><em>stream</em>, <em>stream_len</em><big>)</big><a class="headerlink" href="#falcon.Response.set_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method for setting both stream and stream_len.</p>
+<p>Although the stream and stream_len properties may be set
+directly, using this method ensures stream_len is not
+accidentally neglected.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="falcon.Response.vary">
+<tt class="descname">vary</tt><a class="headerlink" href="#falcon.Response.vary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value to use for the Vary header.</p>
+<p>Set this property to an iterable of header names. For a single
+asterisk or field value, simply pass a single-element list or
+tuple.</p>
+<p>&#8220;Tells downstream proxies how to match future request headers
+to decide whether the cached response can be used rather than
+requesting a fresh one from the origin server.&#8221;</p>
+<p>(Wikipedia)</p>
+<p>See also: <a class="reference external" href="http://goo.gl/NGHdL">http://goo.gl/NGHdL</a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../index.html"><img class="logo" src="../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Req/Resp</a><ul>
+<li><a class="reference internal" href="#id1">Request</a></li>
+<li><a class="reference internal" href="#response">Response</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">API Class</a></li>
+      <li>Next: <a href="status.html" title="next chapter">Status Codes</a></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

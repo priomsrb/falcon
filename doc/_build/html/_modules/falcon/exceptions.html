@@ -1,0 +1,476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>falcon.exceptions &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../../index.html" />
+    <link rel="up" title="falcon" href="../falcon.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Falcon 0.2.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../falcon.html" accesskey="U">falcon</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for falcon.exceptions</h1><div class="highlight"><pre>
+<span class="c"># Copyright 2013 by Rackspace Hosting, Inc.</span>
+<span class="c">#</span>
+<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c"># you may not use this file except in compliance with the License.</span>
+<span class="c"># You may obtain a copy of the License at</span>
+<span class="c">#</span>
+<span class="c">#    http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c">#</span>
+<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c"># See the License for the specific language governing permissions and</span>
+<span class="c"># limitations under the License.</span>
+
+<span class="kn">from</span> <span class="nn">falcon.http_error</span> <span class="kn">import</span> <span class="n">HTTPError</span>
+<span class="kn">import</span> <span class="nn">falcon.status_codes</span> <span class="kn">as</span> <span class="nn">status</span>
+
+
+<div class="viewcode-block" id="HTTPBadRequest"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPBadRequest">[docs]</a><span class="k">class</span> <span class="nc">HTTPBadRequest</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;400 Bad Request.</span>
+
+<span class="sd">    The request could not be understood by the server due to malformed</span>
+<span class="sd">    syntax. The client SHOULD NOT repeat the request without</span>
+<span class="sd">    modifications. (RFC 2616)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title (str): Error title, for example: &#39;TTL Out of Range&#39;.</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_400</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPUnauthorized"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPUnauthorized">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnauthorized</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;401 Unauthorized.</span>
+
+<span class="sd">    Use when authentication is required, and the provided credentials are</span>
+<span class="sd">    not valid, or no credentials were provided in the first place.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title (str): Error title, for example: &#39;Authentication Required&#39;.</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        scheme (str): Authentication scheme to use as the value of the</span>
+<span class="sd">            WWW-Authenticate header in the response (default *None*).</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&#39;headers&#39;</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="n">scheme</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;scheme&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">scheme</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s">&#39;WWW-Authenticate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scheme</span>
+
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_401</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPForbidden"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPForbidden">[docs]</a><span class="k">class</span> <span class="nc">HTTPForbidden</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;403 Forbidden.</span>
+
+<span class="sd">    Use when the client&#39;s credentials are good, but they do not have permission</span>
+<span class="sd">    to access the requested resource.</span>
+
+<span class="sd">    If the request method was not HEAD and the server wishes to make</span>
+<span class="sd">    public why the request has not been fulfilled, it SHOULD describe the</span>
+<span class="sd">    reason for the refusal in the entity.  If the server does not wish to</span>
+<span class="sd">    make this information available to the client, the status code 404</span>
+<span class="sd">    (Not Found) can be used instead. (RFC 2616)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title (str): Error title, for example: &#39;Permission Denied&#39;.</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_403</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPNotFound"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPNotFound">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotFound</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;404 Not Found.</span>
+
+<span class="sd">    Use this when the URL path does not map to an existing resource, or you</span>
+<span class="sd">    do not wish to disclose exactly why a request was refused.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_404</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPMethodNotAllowed"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPMethodNotAllowed">[docs]</a><span class="k">class</span> <span class="nc">HTTPMethodNotAllowed</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;405 Method Not Allowed.</span>
+
+<span class="sd">    The method specified in the Request-Line is not allowed for the</span>
+<span class="sd">    resource identified by the Request-URI. The response MUST include an</span>
+<span class="sd">    Allow header containing a list of valid methods for the requested</span>
+<span class="sd">    resource. (RFC 2616)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        allowed_methods (list of str): Allowed HTTP methods for this</span>
+<span class="sd">            resource, for example: [&#39;GET&#39;, &#39;POST&#39;, &#39;HEAD&#39;].</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allowed_methods</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_405</span><span class="p">,</span> <span class="s">&#39;Method not allowed&#39;</span><span class="p">,</span>
+                           <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s">&#39;Method not allowed&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># NOTE(kgriffs): Trigger an empty body in the response; 405</span>
+            <span class="c"># responses don&#39;t usually have bodies, so we only send one</span>
+            <span class="c"># if the caller indicates they want one, by way of specifying</span>
+            <span class="c"># a description, href, and/or other details.</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c"># NOTE(kgriffs): Inject the &quot;Allow&quot; header so it will be included</span>
+        <span class="c"># in the HTTP response.</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&#39;headers&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Allow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">allowed_methods</span><span class="p">)</span>
+
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_405</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPNotAcceptable"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPNotAcceptable">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotAcceptable</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;406 Not Acceptable.</span>
+
+<span class="sd">    The client requested a resource in a representation that is not</span>
+<span class="sd">    supported by the server. The client must indicate a supported</span>
+<span class="sd">    media type in the Accept header.</span>
+
+<span class="sd">    The resource identified by the request is only capable of generating</span>
+<span class="sd">    response entities which have content characteristics not acceptable</span>
+<span class="sd">    according to the accept headers sent in the request. (RFC 2616)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_406</span><span class="p">,</span> <span class="s">&#39;Media type not acceptable&#39;</span><span class="p">,</span>
+                           <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPConflict"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPConflict">[docs]</a><span class="k">class</span> <span class="nc">HTTPConflict</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;409 Conflict.</span>
+
+<span class="sd">    The request could not be completed due to a conflict with the current</span>
+<span class="sd">    state of the resource. This code is only allowed in situations where</span>
+<span class="sd">    it is expected that the user might be able to resolve the conflict</span>
+<span class="sd">    and resubmit the request. The response body SHOULD include enough</span>
+<span class="sd">    information for the user to recognize the source of the conflict.</span>
+<span class="sd">    Ideally, the response entity would include enough information for the</span>
+<span class="sd">    user or user agent to fix the problem; however, that might not be</span>
+<span class="sd">    possible and is not required.</span>
+
+<span class="sd">    Conflicts are most likely to occur in response to a PUT request. For</span>
+<span class="sd">    example, if versioning were being used and the entity being PUT</span>
+<span class="sd">    included changes to a resource which conflict with those made by an</span>
+<span class="sd">    earlier (third-party) request, the server might use the 409 response</span>
+<span class="sd">    to indicate that it can&#39;t complete the request. In this case, the</span>
+<span class="sd">    response entity would likely contain a list of the differences</span>
+<span class="sd">    between the two versions in a format defined by the response</span>
+<span class="sd">    Content-Type.</span>
+
+<span class="sd">    (RFC 2616)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title (str): Error title, for example: &#39;Editing Conflict&#39;.</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_409</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPLengthRequired"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPLengthRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPLengthRequired</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;411 Length Required.</span>
+
+<span class="sd">    The server refuses to accept the request without a defined</span>
+<span class="sd">    Content-Length. The client MAY repeat the request if it adds a</span>
+<span class="sd">    valid Content-Length header field containing the length of the</span>
+<span class="sd">    message-body in the request message. (RFC 2616)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title (str): Error title, for example: &#39;Missing Content-Length&#39;.</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_411</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPPreconditionFailed"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPPreconditionFailed">[docs]</a><span class="k">class</span> <span class="nc">HTTPPreconditionFailed</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;412 Precondition Failed.</span>
+
+<span class="sd">    The precondition given in one or more of the request-header fields</span>
+<span class="sd">    evaluated to false when it was tested on the server. This response</span>
+<span class="sd">    code allows the client to place preconditions on the current resource</span>
+<span class="sd">    metainformation (header field data) and thus prevent the requested</span>
+<span class="sd">    method from being applied to a resource other than the one intended.</span>
+<span class="sd">    (RFC 2616)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title (str): Error title, for example: &#39;Image Not Modified&#39;.</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_412</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPUnsupportedMediaType"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPUnsupportedMediaType">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnsupportedMediaType</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;415 Unsupported Media Type.</span>
+
+<span class="sd">    The client is trying to submit a resource encoded as an Internet media</span>
+<span class="sd">    type that the server does not support.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_415</span><span class="p">,</span> <span class="s">&#39;Unsupported media type&#39;</span><span class="p">,</span>
+                           <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPRangeNotSatisfiable"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPRangeNotSatisfiable">[docs]</a><span class="k">class</span> <span class="nc">HTTPRangeNotSatisfiable</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;416 Range Not Satisfiable.</span>
+
+<span class="sd">    The requested range is not valid. See also: http://goo.gl/Qsa4EF</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        resource_length: The maximum value for the last-byte-pos of a range</span>
+<span class="sd">            request. Used to set the Content-Range header.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource_length</span><span class="p">):</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Content-Range&#39;</span><span class="p">:</span> <span class="s">&#39;bytes */&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">resource_length</span><span class="p">)}</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_416</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPInternalServerError"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPInternalServerError">[docs]</a><span class="k">class</span> <span class="nc">HTTPInternalServerError</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;500 Internal Server Error.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title (str): Error title, for example: &#39;This Should Never Happen&#39;.</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_500</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPBadGateway"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPBadGateway">[docs]</a><span class="k">class</span> <span class="nc">HTTPBadGateway</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;502 Bad Gateway</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title (str): Error title, for</span>
+<span class="sd">            example: &#39;Upstream Server is Unavailable&#39;.</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_502</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HTTPServiceUnavailable"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.HTTPServiceUnavailable">[docs]</a><span class="k">class</span> <span class="nc">HTTPServiceUnavailable</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;503 Service Unavailable.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title (str): Error title, for example: &#39;Temporarily Unavailable&#39;.</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two.</span>
+<span class="sd">        retry_after (date or int): Value for the Retry-After header. If a date</span>
+<span class="sd">            object, will serialize as an HTTP date. Otherwise, a non-negative</span>
+<span class="sd">            int is expected, representing the number of seconds to wait. See</span>
+<span class="sd">            also: http://goo.gl/DIrWr .</span>
+<span class="sd">        kwargs (optional): Same as for ``HTTPError``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">retry_after</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&#39;headers&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Retry-After&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">retry_after</span><span class="p">)</span>
+        <span class="n">HTTPError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_503</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="InvalidHeader"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.InvalidHeader">[docs]</a><span class="k">class</span> <span class="nc">InvalidHeader</span><span class="p">(</span><span class="n">HTTPBadRequest</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;HTTP header is invalid.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        msg (str): A description of why the value is invalid.</span>
+<span class="sd">        value (str): The value that is given to the header.</span>
+<span class="sd">        header_name (str): The name of the header.</span>
+<span class="sd">        kwargs (optional): Optional args to include more information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">header_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;The value &quot;{0}&quot; given for the {1} header is invalid. &#39;</span>
+                       <span class="s">&#39;{2}&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">header_name</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">InvalidHeader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="s">&#39;Invalid header value&#39;</span><span class="p">,</span>
+                                            <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="InvalidParam"><a class="viewcode-back" href="../../api/errors.html#falcon.exceptions.InvalidParam">[docs]</a><span class="k">class</span> <span class="nc">InvalidParam</span><span class="p">(</span><span class="n">HTTPBadRequest</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;HTTP parameter is invalid</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        msg (str): A description of the invalid parameter.</span>
+<span class="sd">        param_name (str): The name of the paramameter.</span>
+<span class="sd">        kwargs (optional): Optional args to include more information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="s">&#39;The {0} parameter is invalid. {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span>
+                                                                 <span class="n">msg</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">InvalidParam</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="s">&#39;Invalid query parameter&#39;</span><span class="p">,</span>
+                                           <span class="n">description</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../../index.html"><img class="logo" src="../../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  <li><a href="../falcon.html">falcon</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

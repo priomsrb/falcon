@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../index.html" />
+    <link rel="next" title="Installation" href="install.html" />
+    <link rel="prev" title="Questions &amp; Answers" href="../community/faq.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../community/faq.html" title="Questions &amp; Answers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction">
+<span id="id1"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Falcon is a minimalist, high-performance web framework for building web services and app backends with Python. It&#8217;s WSGI-based, and works great with Python 2.6, Python 2.7, Python 3.3, Python 3.4 and PyPy, giving you a wide variety of deployment options.</p>
+<div class="section" id="how-is-falcon-different">
+<h2>How is Falcon different?<a class="headerlink" href="#how-is-falcon-different" title="Permalink to this headline">¶</a></h2>
+<p>First, Falcon is one of the fastest WSGI frameworks on the planet, and we are always trying to make it perform even better. When there is a conflict between saving the developer a few keystrokes and saving a few microseconds to serve a request, Falcon is strongly biased toward the latter. Falcon strives to strike a good balance between usability and speed.</p>
+<p>Second, Falcon is lean. It doesn&#8217;t try to be everything to everyone, focusing instead on a single use case: HTTP APIs. Falcon doesn&#8217;t include a template engine, form helpers, or an ORM (although those are easy enough to add yourself). When you sit down to write a web service with Falcon, you choose your own adventure in terms of async I/O, serialization, data access, etc. In fact, the only dependencies Falcon takes is on six, to make it easier to support both Python 2 and 3, and on mimeparse for handling complex Accept headers.</p>
+<p>Third, Falcon eschews magic. When you use the framework, it&#8217;s pretty obvious which inputs lead to which outputs. Also, it&#8217;s blatantly obvious where variables originate. All this makes it easier for you and your posterity to reason about your code, even months (or years) after you wrote it.</p>
+</div>
+<div class="section" id="about-apache-2-0">
+<h2>About Apache 2.0<a class="headerlink" href="#about-apache-2-0" title="Permalink to this headline">¶</a></h2>
+<p>Falcon is released under the terms of the <a class="reference external" href="http://opensource.org/licenses/Apache-2.0">Apache 2.0 License</a>. This means you can use it in your commercial applications without having to also open-source your own code. It also means that if someone happens to contribute code that is associated with a patent, you are granted a free license to use said patent. That&#8217;s a pretty sweet deal.</p>
+<p>Now, if you do make changes to Falcon itself, please consider contributing your awesome work back to the community.</p>
+</div>
+<div class="section" id="falcon-license">
+<h2>Falcon License<a class="headerlink" href="#falcon-license" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Copyright 2012 by Rackspace Hosting, Inc.</p>
+<p>Licensed under the Apache License, Version 2.0 (the &#8220;License&#8221;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &#8220;AS IS&#8221; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../index.html"><img class="logo" src="../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#how-is-falcon-different">How is Falcon different?</a></li>
+<li><a class="reference internal" href="#about-apache-2-0">About Apache 2.0</a></li>
+<li><a class="reference internal" href="#falcon-license">Falcon License</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../community/faq.html" title="previous chapter">Questions &amp; Answers</a></li>
+      <li>Next: <a href="install.html" title="next chapter">Installation</a></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

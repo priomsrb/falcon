@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API Class &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../index.html" />
+    <link rel="next" title="Req/Resp" href="request_and_response.html" />
+    <link rel="prev" title="Tutorial" href="../user/tutorial.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="request_and_response.html" title="Req/Resp"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../user/tutorial.html" title="Tutorial"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="api-class">
+<span id="api"></span><h1>API Class<a class="headerlink" href="#api-class" title="Permalink to this headline">¶</a></h1>
+<p>Falcon&#8217;s API class is a WSGI &#8220;application&#8221; that you can host with any
+standard-compliant WSGI server.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">falcon</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">application</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">API</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="falcon.API">
+<em class="property">class </em><tt class="descclassname">falcon.</tt><tt class="descname">API</tt><big>(</big><em>media_type='application/json; charset=utf-8'</em>, <em>before=None</em>, <em>after=None</em>, <em>request_type=&lt;class 'falcon.request.Request'&gt;</em>, <em>response_type=&lt;class 'falcon.response.Response'&gt;</em><big>)</big><a class="headerlink" href="#falcon.API" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is the main entry point into a Falcon-based app.</p>
+<p>Each API instance provides a callable WSGI interface and a simple routing
+engine based on URI Templates (RFC 6570).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>media_type</strong> (<em>str, optional</em>) &#8211; Default media type to use as the value for
+the Content-Type header on responses. (default &#8216;application/json&#8217;)</li>
+<li><strong>before</strong> (<em>callable, optional</em>) &#8211; A global action hook (or list of hooks)
+to call before each on_* responder, for all resources. Similar to
+the <tt class="docutils literal"><span class="pre">falcon.before</span></tt> decorator, but applies to the entire API.
+When more than one hook is given, they will be executed
+in natural order (starting with the first in the list).</li>
+<li><strong>after</strong> (<em>callable, optional</em>) &#8211; A global action hook (or list of hooks)
+to call after each on_* responder, for all resources. Similar to
+the <tt class="docutils literal"><span class="pre">after</span></tt> decorator, but applies to the entire API.</li>
+<li><strong>request_type</strong> (<em>Request, optional</em>) &#8211; Request-alike class to use instead
+of Falcon&#8217;s default class. Useful if you wish to extend
+<tt class="docutils literal"><span class="pre">falcon.request.Request</span></tt> with a custom <tt class="docutils literal"><span class="pre">context_type</span></tt>.
+(default falcon.request.Request)</li>
+<li><strong>response_type</strong> (<em>Response, optional</em>) &#8211; Response-alike class to use
+instead of Falcon&#8217;s default class. (default
+falcon.response.Response)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="falcon.API.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#falcon.API.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>WSGI <cite>app</cite> method.</p>
+<p>Makes instances of API callable from a WSGI server. May be used to
+host an API or called directly in order to simulate requests when
+testing the API.</p>
+<p>See also PEP 3333.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>env</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A WSGI environment dictionary</li>
+<li><strong>start_response</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; A WSGI helper function for setting
+status and headers on a response.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.API.add_error_handler">
+<tt class="descname">add_error_handler</tt><big>(</big><em>exception</em>, <em>handler=None</em><big>)</big><a class="headerlink" href="#falcon.API.add_error_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a handler for a given exception type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>exception</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#type" title="(in Python v2.7)"><em>type</em></a>) &#8211; Whenever an error occurs when handling a request
+that is an instance of this exception class, the given
+handler callable will be used to handle the exception.</li>
+<li><strong>handler</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; <p>A callable taking the form
+<tt class="docutils literal"><span class="pre">func(ex,</span> <span class="pre">req,</span> <span class="pre">resp,</span> <span class="pre">params)</span></tt>, called
+when there is a matching exception raised when handling a
+request.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If not specified, the handler will default to
+<tt class="docutils literal"><span class="pre">exception.handle</span></tt>, where <tt class="docutils literal"><span class="pre">exception</span></tt> is the error
+type specified above, and <tt class="docutils literal"><span class="pre">handle</span></tt> is a static method
+(i.e., decorated with &#64;staticmethod) that accepts
+the same params just described.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A handler can either raise an instance of HTTPError
+or modify resp manually in order to communicate information
+about the issue to the client.</p>
+</div>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.API.add_route">
+<tt class="descname">add_route</tt><big>(</big><em>uri_template</em>, <em>resource</em><big>)</big><a class="headerlink" href="#falcon.API.add_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associates a URI path with a resource.</p>
+<p>A resource is an instance of a class that defines various on_*
+&#8220;responder&#8221; methods, one for each HTTP method the resource
+allows. For example, to support GET, simply define an <cite>on_get</cite>
+responder. If a client requests an unsupported method, Falcon
+will respond with &#8220;405 Method not allowed&#8221;.</p>
+<p>Responders must always define at least two arguments to receive
+request and response objects, respectively. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">on_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>In addition, if the route&#8217;s uri template contains field
+expressions, any responder that desires to receive requests
+for that route must accept arguments named after the respective
+field names defined in the template. For example, given the
+following uri template:</p>
+<div class="highlight-python"><div class="highlight"><pre>/das/{thing}
+</pre></div>
+</div>
+<p>A PUT request to &#8220;/das/code&#8221; would be routed to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">on_put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">thing</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>uri_template</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Relative URI template. Currently only Level 1
+templates are supported. See also RFC 6570. Care must be
+taken to ensure the template does not mask any sink
+patterns (see also <tt class="docutils literal"><span class="pre">add_sink</span></tt>).</li>
+<li><strong>resource</strong> (<em>instance</em>) &#8211; Object which represents an HTTP/REST
+&#8220;resource&#8221;. Falcon will pass &#8220;GET&#8221; requests to on_get,
+&#8220;PUT&#8221; requests to on_put, etc. If any HTTP methods are not
+supported by your resource, simply don&#8217;t define the
+corresponding request handlers, and Falcon will do the right
+thing.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.API.add_sink">
+<tt class="descname">add_sink</tt><big>(</big><em>sink</em>, <em>prefix='/'</em><big>)</big><a class="headerlink" href="#falcon.API.add_sink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a &#8220;sink&#8221; responder to the API.</p>
+<p>If no route matches a request, but the path in the requested URI
+matches the specified prefix, Falcon will pass control to the
+given sink, regardless of the HTTP method requested.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sink</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; A callable taking the form <tt class="docutils literal"><span class="pre">func(req,</span> <span class="pre">resp)</span></tt>.</li>
+<li><strong>prefix</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; <p>A regex string, typically starting with &#8216;/&#8217;, which
+will trigger the sink if it matches the path portion of the
+request&#8217;s URI. Both strings and precompiled regex objects
+may be specified. Characters are matched starting at the
+beginning of the URI path.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Named groups are converted to kwargs and passed to
+the sink as such.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the route collides with a route&#8217;s URI template, the
+route will mask the sink (see also <tt class="docutils literal"><span class="pre">add_route</span></tt>).</p>
+</div>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../index.html"><img class="logo" src="../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../user/tutorial.html" title="previous chapter">Tutorial</a></li>
+      <li>Next: <a href="request_and_response.html" title="next chapter">Req/Resp</a></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

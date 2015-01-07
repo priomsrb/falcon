@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Falcon Web Framework &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="#" />
+    <link rel="next" title="Get Help" href="community/help.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="community/help.html" title="Get Help"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="the-falcon-web-framework">
+<h1>The Falcon Web Framework<a class="headerlink" href="#the-falcon-web-framework" title="Permalink to this headline">¶</a></h1>
+<p>Release v0.2.0. (<a class="reference internal" href="user/install.html#install"><em>Installation</em></a>)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This documentation targets the upcoming 0.2.0 release of Falcon,
+currently in beta and available on PyPI.</p>
+</div>
+<p>Falcon is a minimalist WSGI library for building speedy web APIs and app
+backends. We like to think of Falcon as the <cite>Dieter Rams</cite> of web frameworks.</p>
+<p>When it comes to building HTTP APIs, other frameworks weigh you down with tons
+of dependencies and unnecessary abstractions. Falcon cuts to the chase with a
+clean design that embraces HTTP and the REST architectural style.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">CatalogItem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c"># ...</span>
+
+    <span class="nd">@falcon.before</span><span class="p">(</span><span class="n">hooks</span><span class="o">.</span><span class="n">to_oid</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">on_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">after</span><span class="o">=</span><span class="p">[</span><span class="n">hooks</span><span class="o">.</span><span class="n">serialize</span><span class="p">])</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;/items/{id}&#39;</span><span class="p">,</span> <span class="n">CatalogItem</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="section" id="testimonials">
+<h2>Testimonials<a class="headerlink" href="#testimonials" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>S. Magrí</strong></dt>
+<dd>I feel like I&#8217;m just talking HTTP at last, with nothing in the
+middle. Falcon seems like the <em>requests</em> of backend.</dd>
+<dt><strong>J. Legler</strong></dt>
+<dd>The source code for falcon is so good, I almost prefer it to
+documentation. It basically can&#8217;t be wrong.</dd>
+<dt><strong>K. Conway</strong></dt>
+<dd>What other framework has integrated support for &#8220;786 TRY IT NOW&#8221;?</dd>
+</dl>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<p>Falcon tries to do as little as possible while remaining highly effective.</p>
+<ul class="simple">
+<li>Routes based on URI templates RFC</li>
+<li>REST-inspired mapping of URIs to resources</li>
+<li>Global, resource, and method hooks</li>
+<li>Idiomatic HTTP error responses</li>
+<li>Full Unicode support</li>
+<li>Intuitive request and response objects</li>
+<li>Works great with async libraries like gevent</li>
+<li>Minimal attack surface for writing secure APIs</li>
+<li>100% code coverage with a comprehensive test suite</li>
+<li>Only depends on six and mimeparse</li>
+<li>Python 2.6, 2.7, 3.3, 3.4 + PyPy</li>
+</ul>
+</div>
+<div class="section" id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://speakerdeck.com/cabrera/the-definitive-introduction-to-falcon">The Definitive Introduction to Falcon</a></li>
+<li><a class="reference external" href="http://blog.kgriffs.com/2013/07/02/python-fast-web-service-framework.html">An Unladen Web Framework</a></li>
+<li><a class="reference external" href="http://blog.kgriffs.com/2014/02/04/falcon-wsgi-framework-highlights-0.1.8.html">Falcon WSGI Framework: 0.1.8 Highlights</a></li>
+</ul>
+</div>
+<div class="section" id="community-guide">
+<h2>Community Guide<a class="headerlink" href="#community-guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="community/help.html">Get Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="community/contribute.html">Contribute to Falcon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="community/faq.html">Questions &amp; Answers</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="user-guide">
+<h2>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user/intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/intro.html#how-is-falcon-different">How is Falcon different?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/intro.html#about-apache-2-0">About Apache 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/intro.html#falcon-license">Falcon License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/install.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/install.html#install-from-pypi">Install from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/install.html#installing-cython-on-os-x">Installing Cython on OS X</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/install.html#wsgi-server">WSGI Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/install.html#source-code">Source Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/quickstart.html#the-big-picture">The Big Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/quickstart.html#learning-by-example">Learning by Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/quickstart.html#more-features">More Features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#the-big-picture">The Big Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#first-steps">First Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#hosting-your-app">Hosting Your App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#creating-resources">Creating Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#request-and-response-objects">Request and Response Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#serving-images">Serving Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#query-strings">Query Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#introducing-hooks">Introducing Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#what-now">What Now?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="classes-and-functions">
+<h2>Classes and Functions<a class="headerlink" href="#classes-and-functions" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">API Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/request_and_response.html">Req/Resp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/request_and_response.html#id1">Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/request_and_response.html#response">Response</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/status.html">Status Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/status.html#xx-informational">1xx Informational</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/status.html#xx-success">2xx Success</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/status.html#xx-redirection">3xx Redirection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/status.html#xx-client-error">4xx Client Error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/status.html#xx-server-error">5xx Server Error</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/errors.html">Error Handling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/errors.html#base-class">Base Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/errors.html#module-falcon.exceptions">Predefined Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/hooks.html">Hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/util.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/util.html#module-falcon.util.uri">URI Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/util.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/util.html#module-falcon.util">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="#"><img class="logo" src="_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+    <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul>
+
+<h3>Get Involved</h3>
+
+<p>
+    If you have an idea for improving the framework, or come across a bug,
+    please let us know by
+    <a href="https://github.com/racker/falcon/issues">submitting an issue</a>
+    and/or sending in a pull request.
+</p>
+
+<p>
+    We also have a <a href="community/help.html#mailing-list">Falcon mailing list</a> where you can share your ideas and ask questions.
+</p>
+
+<p>
+    Also, if you are ever in the mood to chat, the Falcon crew hangs out in
+    <strong>#falconframework</strong> on
+    <a href="http://www.freenode.net/">Freenode</a>. Everyone is
+    welcome to join; the channel is a great place to
+    ask questions and keep up to date with the latest developments.
+</p>
+
+<h3>Credits</h3>
+
+<p>
+    Falcon is made possible by the generous support of Rackspace, and
+    by a team of talented volunteers <strong>like you</strong> from the broader Python community.
+</p>
+
+<p>
+    The Falcon logo is based on a <a href=https://commons.wikimedia.org/wiki/File:Brown-Falcon,-Vic,-3.1.2008.jpg>photograph by John O'Neill</a> used under the
+    Creative Commons Attribution-Share Alike 3.0 Unported license.
+</p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

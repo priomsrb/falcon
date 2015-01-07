@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Quickstart &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../index.html" />
+    <link rel="next" title="Tutorial" href="tutorial.html" />
+    <link rel="prev" title="Installation" href="install.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Tutorial"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="quickstart">
+<span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<p>If you haven&#8217;t done so already, please take a moment to
+<a class="reference internal" href="install.html#install"><em>install</em></a> the Falcon web framework before
+continuing.</p>
+<div class="section" id="the-big-picture">
+<h2>The Big Picture<a class="headerlink" href="#the-big-picture" title="Permalink to this headline">¶</a></h2>
+<p>Falcon encourages composition over inheritance in order to extend the
+functionality of the framework. This helps make applications easier to
+maintain and refactor over time.</p>
+<a class="reference internal image-reference" href="../_images/my-web-app.png"><img alt="Falcon-based web application architecture" src="../_images/my-web-app.png" style="width: 600px;" /></a>
+</div>
+<div class="section" id="learning-by-example">
+<h2>Learning by Example<a class="headerlink" href="#learning-by-example" title="Permalink to this headline">¶</a></h2>
+<p>Here is a simple example from Falcon&#8217;s README, showing how to get
+started writing an API:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># things.py</span>
+
+<span class="c"># Let&#39;s get this party started</span>
+<span class="kn">import</span> <span class="nn">falcon</span>
+
+
+<span class="c"># Falcon follows the REST architectural style, meaning (among</span>
+<span class="c"># other things) that you think in terms of resources and state</span>
+<span class="c"># transitions, which map to HTTP verbs.</span>
+<span class="k">class</span> <span class="nc">ThingsResource</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">on_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handles GET requests&quot;&quot;&quot;</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>  <span class="c"># This is the default status</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Two things awe me most, the starry sky &#39;</span>
+                     <span class="s">&#39;above me and the moral law within me.</span><span class="se">\n</span><span class="s">&#39;</span>
+                     <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+                     <span class="s">&#39;    ~ Immanuel Kant</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+<span class="c"># falcon.API instances are callable WSGI apps</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">API</span><span class="p">()</span>
+
+<span class="c"># Resources are represented by long-lived class instances</span>
+<span class="n">things</span> <span class="o">=</span> <span class="n">ThingsResource</span><span class="p">()</span>
+
+<span class="c"># things will handle all requests to the &#39;/things&#39; URL path</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;/things&#39;</span><span class="p">,</span> <span class="n">things</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can run the above example using any WSGI server, such as uWSGI
+or Gunicorn. For example:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ pip install gunicorn
+$ gunicorn things:app
+</pre></div>
+</div>
+<p>Then, in another terminal:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ curl localhost:8000/things
+</pre></div>
+</div>
+</div>
+<div class="section" id="more-features">
+<h2>More Features<a class="headerlink" href="#more-features" title="Permalink to this headline">¶</a></h2>
+<p>Here is a more involved example that demonstrates reading headers and query
+parameters, handling errors, and working with request and response bodies.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">wsgiref</span> <span class="kn">import</span> <span class="n">simple_server</span>
+
+<span class="kn">import</span> <span class="nn">falcon</span>
+
+
+<span class="k">class</span> <span class="nc">StorageEngine</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_things</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">limit</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">add_thing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thing</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())}</span>
+
+
+<span class="k">class</span> <span class="nc">StorageError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Sorry, couldn</span><span class="se">\&#39;</span><span class="s">t write your thing to the &#39;</span>
+                       <span class="s">&#39;database. It worked on my box.&#39;</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">(</span><span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_725</span><span class="p">,</span>
+                               <span class="s">&#39;Database Error&#39;</span><span class="p">,</span>
+                               <span class="n">description</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Proxy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_503</span>
+
+
+<span class="k">class</span> <span class="nc">SinkAdapter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+
+<span class="k">def</span> <span class="nf">token_is_valid</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">True</span>  <span class="c"># Suuuuuure it&#39;s valid...</span>
+
+
+<span class="k">def</span> <span class="nf">auth</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="c"># Alternatively, use Talons or do this in WSGI middleware...</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_header</span><span class="p">(</span><span class="s">&#39;X-Auth-Token&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Please provide an auth token &#39;</span>
+                       <span class="s">&#39;as part of the request.&#39;</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="s">&#39;Auth token required&#39;</span><span class="p">,</span>
+                                      <span class="n">description</span><span class="p">,</span>
+                                      <span class="n">href</span><span class="o">=</span><span class="s">&#39;http://docs.example.com/auth&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">token_is_valid</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;user_id&#39;</span><span class="p">]):</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;The provided auth token is not valid. &#39;</span>
+                       <span class="s">&#39;Please request a new token and try again.&#39;</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="s">&#39;Authentication required&#39;</span><span class="p">,</span>
+                                      <span class="n">description</span><span class="p">,</span>
+                                      <span class="n">href</span><span class="o">=</span><span class="s">&#39;http://docs.example.com/auth&#39;</span><span class="p">,</span>
+                                      <span class="n">scheme</span><span class="o">=</span><span class="s">&#39;Token; UUID&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">check_media_type</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">req</span><span class="o">.</span><span class="n">client_accepts_json</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPNotAcceptable</span><span class="p">(</span>
+            <span class="s">&#39;This API only supports responses encoded as JSON.&#39;</span><span class="p">,</span>
+            <span class="n">href</span><span class="o">=</span><span class="s">&#39;http://docs.examples.com/api/json&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="s">&#39;PUT&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">req</span><span class="o">.</span><span class="n">content_type</span> <span class="o">==</span> <span class="s">&#39;application/json&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPUnsupportedMediaType</span><span class="p">(</span>
+                <span class="s">&#39;This API only supports requests encoded as JSON.&#39;</span><span class="p">,</span>
+                <span class="n">href</span><span class="o">=</span><span class="s">&#39;http://docs.examples.com/api/json&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="c"># req.stream corresponds to the WSGI wsgi.input environ variable,</span>
+    <span class="c"># and allows you to read bytes from the request body.</span>
+    <span class="c">#</span>
+    <span class="c"># See also: PEP 3333</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">body</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPBadRequest</span><span class="p">(</span><span class="s">&#39;Empty request body&#39;</span><span class="p">,</span>
+                                    <span class="s">&#39;A valid JSON document is required.&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;doc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">body</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">))</span>
+
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">UnicodeDecodeError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">(</span><span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_753</span><span class="p">,</span>
+                               <span class="s">&#39;Malformed JSON&#39;</span><span class="p">,</span>
+                               <span class="s">&#39;Could not decode the request body. The &#39;</span>
+                               <span class="s">&#39;JSON was incorrect or not encoded as UTF-8.&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;doc&#39;</span><span class="p">])</span>
+
+
+<span class="k">class</span> <span class="nc">ThingsResource</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">db</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;thingsapp.&#39;</span> <span class="o">+</span> <span class="n">__name__</span><span class="p">)</span>
+
+    <span class="nd">@falcon.after</span><span class="p">(</span><span class="n">serialize</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">on_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="n">marker</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s">&#39;marker&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_param_as_int</span><span class="p">(</span><span class="s">&#39;limit&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">50</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_things</span><span class="p">(</span><span class="n">marker</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+
+            <span class="n">description</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Aliens have attacked our base! We will &#39;</span>
+                           <span class="s">&#39;be back as soon as we fight them off. &#39;</span>
+                           <span class="s">&#39;We appreciate your patience.&#39;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPServiceUnavailable</span><span class="p">(</span>
+                <span class="s">&#39;Service Outage&#39;</span><span class="p">,</span>
+                <span class="n">description</span><span class="p">,</span>
+                <span class="mi">30</span><span class="p">)</span>
+
+        <span class="c"># An alternative way of doing DRY serialization would be to</span>
+        <span class="c"># create a custom class that inherits from falcon.Request. This</span>
+        <span class="c"># class could, for example, have an additional &#39;doc&#39; property</span>
+        <span class="c"># that would serialize to JSON under the covers.</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;doc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+        <span class="n">resp</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s">&#39;X-Powered-By&#39;</span><span class="p">,</span> <span class="s">&#39;Small Furry Creatures&#39;</span><span class="p">)</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+
+    <span class="nd">@falcon.before</span><span class="p">(</span><span class="n">deserialize</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">on_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+        <span class="n">proper_thing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">add_thing</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+
+        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_201</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s">&#39;/</span><span class="si">%s</span><span class="s">/things/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">proper_thing</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">])</span>
+
+
+<span class="c"># Configure your WSGI server to load &quot;things.app&quot; (app is a WSGI callable)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">before</span><span class="o">=</span><span class="p">[</span><span class="n">auth</span><span class="p">,</span> <span class="n">check_media_type</span><span class="p">])</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">StorageEngine</span><span class="p">()</span>
+<span class="n">things</span> <span class="o">=</span> <span class="n">ThingsResource</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;/{user_id}/things&#39;</span><span class="p">,</span> <span class="n">things</span><span class="p">)</span>
+
+<span class="c"># If a responder ever raised an instance of StorageError, pass control to</span>
+<span class="c"># the given handler.</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_error_handler</span><span class="p">(</span><span class="n">StorageError</span><span class="p">,</span> <span class="n">StorageError</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span>
+
+<span class="c"># Proxy some things to another service; this example shows how you might</span>
+<span class="c"># send parts of an API off to a legacy system that hasn&#39;t been upgraded</span>
+<span class="c"># yet, or perhaps is a single cluster that all data centers have to share.</span>
+<span class="n">sink</span> <span class="o">=</span> <span class="n">SinkAdapter</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_sink</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span> <span class="s">r&#39;/v1/[charts|inventory]&#39;</span><span class="p">)</span>
+
+<span class="c"># Useful for debugging problems in your API; works with pdb.set_trace()</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">httpd</span> <span class="o">=</span> <span class="n">simple_server</span><span class="o">.</span><span class="n">make_server</span><span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">8000</span><span class="p">,</span> <span class="n">app</span><span class="p">)</span>
+    <span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../index.html"><img class="logo" src="../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Quickstart</a><ul>
+<li><a class="reference internal" href="#the-big-picture">The Big Picture</a></li>
+<li><a class="reference internal" href="#learning-by-example">Learning by Example</a></li>
+<li><a class="reference internal" href="#more-features">More Features</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="install.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="tutorial.html" title="next chapter">Tutorial</a></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

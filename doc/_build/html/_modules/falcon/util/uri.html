@@ -1,0 +1,437 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>falcon.util.uri &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../../../index.html" />
+    <link rel="up" title="falcon.util" href="../util.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Falcon 0.2.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../falcon.html" >falcon</a> &raquo;</li>
+          <li><a href="../util.html" accesskey="U">falcon.util</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for falcon.util.uri</h1><div class="highlight"><pre>
+<span class="c"># Copyright 2013 by Rackspace Hosting, Inc.</span>
+<span class="c">#</span>
+<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c"># you may not use this file except in compliance with the License.</span>
+<span class="c"># You may obtain a copy of the License at</span>
+<span class="c">#</span>
+<span class="c">#    http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c">#</span>
+<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c"># See the License for the specific language governing permissions and</span>
+<span class="c"># limitations under the License.</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="c"># NOTE(kgriffs): See also RFC 3986</span>
+<span class="n">_UNRESERVED</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span>
+               <span class="s">&#39;abcdefghijklmnopqrstuvwxyz&#39;</span>
+               <span class="s">&#39;0123456789&#39;</span>
+               <span class="s">&#39;-._~&#39;</span><span class="p">)</span>
+
+<span class="c"># NOTE(kgriffs): See also RFC 3986</span>
+<span class="n">_DELIMITERS</span> <span class="o">=</span> <span class="s">&quot;:/?#[]@!$&amp;&#39;()*+,;=&quot;</span>
+<span class="n">_ALL_ALLOWED</span> <span class="o">=</span> <span class="n">_UNRESERVED</span> <span class="o">+</span> <span class="n">_DELIMITERS</span>
+
+<span class="n">_HEX_DIGITS</span> <span class="o">=</span> <span class="s">&#39;0123456789ABCDEFabcdef&#39;</span>
+
+<span class="c"># NOTE(kgriffs): Match query string fields. If this is modified, take</span>
+<span class="c"># care not to reduce performance.</span>
+<span class="n">_QS_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;(?:&amp;|\A)([^=]+)=([^&amp;]+)&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_create_char_encoder</span><span class="p">(</span><span class="n">allowed_chars</span><span class="p">):</span>
+
+    <span class="n">lookup</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">code_point</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">chr</span><span class="p">(</span><span class="n">code_point</span><span class="p">)</span> <span class="ow">in</span> <span class="n">allowed_chars</span><span class="p">:</span>
+            <span class="n">encoded_char</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">code_point</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">encoded_char</span> <span class="o">=</span> <span class="s">&#39;%{0:02X}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code_point</span><span class="p">)</span>
+
+        <span class="c"># NOTE(kgriffs): PY2 returns str from uri.encode, while</span>
+        <span class="c"># PY3 returns a byte array.</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">code_point</span><span class="p">)</span> <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span> <span class="k">else</span> <span class="n">code_point</span>
+        <span class="n">lookup</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoded_char</span>
+
+    <span class="k">return</span> <span class="n">lookup</span><span class="o">.</span><span class="n">__getitem__</span>
+
+
+<span class="k">def</span> <span class="nf">_create_str_encoder</span><span class="p">(</span><span class="n">is_value</span><span class="p">):</span>
+
+    <span class="n">allowed_chars</span> <span class="o">=</span> <span class="n">_UNRESERVED</span> <span class="k">if</span> <span class="n">is_value</span> <span class="k">else</span> <span class="n">_ALL_ALLOWED</span>
+    <span class="n">encode_char</span> <span class="o">=</span> <span class="n">_create_char_encoder</span><span class="p">(</span><span class="n">allowed_chars</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">encoder</span><span class="p">(</span><span class="n">uri</span><span class="p">):</span>
+        <span class="c"># PERF(kgriffs): Very fast way to check, learned from urlib.quote</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">uri</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">allowed_chars</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">uri</span>
+
+        <span class="c"># Convert to a byte array if it is not one already</span>
+        <span class="c">#</span>
+        <span class="c"># NOTE(kgriffs): Code coverage disabled since in Py3K the uri</span>
+        <span class="c"># is always a text type, so we get a failure for that tox env.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">):</span>  <span class="c"># pragma no cover</span>
+            <span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+
+        <span class="c"># Use our map to encode each char and join the result into a new uri</span>
+        <span class="c">#</span>
+        <span class="c"># PERF(kgriffs): map is faster than list comp on py27, but a tiny bit</span>
+        <span class="c"># slower on py33. Since we are already much faster than urllib on</span>
+        <span class="c"># py33, let&#39;s optimize for py27.</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">encode_char</span><span class="p">,</span> <span class="n">uri</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">encoder</span>
+
+
+<span class="n">encode</span> <span class="o">=</span> <span class="n">_create_str_encoder</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">encode</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="s">&#39;encode&#39;</span>
+<span class="n">encode</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;Encodes a full or relative URI according to RFC 3986.</span>
+
+<span class="s">RFC 3986 defines a set of &quot;unreserved&quot; characters as well as a</span>
+<span class="s">set of &quot;reserved&quot; characters used as delimiters. This function escapes</span>
+<span class="s">all other &quot;disallowed&quot; characters by percent-encoding them.</span>
+
+<span class="s">Note:</span>
+<span class="s">    This utility is faster in the average case than the similar</span>
+<span class="s">    `quote` function found in urlib. It also strives to be easier</span>
+<span class="s">    to use by assuming a sensible default of allowed characters.</span>
+
+<span class="s">Args:</span>
+<span class="s">    uri (str): URI or part of a URI to encode. If this is a wide</span>
+<span class="s">        string (i.e., *six.text_type*), it will be encoded to</span>
+<span class="s">        a UTF-8 byte array and any multibyte sequences will</span>
+<span class="s">        be percent-encoded as-is.</span>
+
+<span class="s">Returns:</span>
+<span class="s">    str: An escaped version of `uri`, where all disallowed characters</span>
+<span class="s">        have been percent-encoded.</span>
+
+<span class="s">&quot;&quot;&quot;</span>
+
+
+<span class="n">encode_value</span> <span class="o">=</span> <span class="n">_create_str_encoder</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">encode_value</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;encode_value&#39;</span>
+<span class="n">encode_value</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;Encodes a value string according to RFC 3986.</span>
+
+<span class="s">Disallowed characters are percent-encoded in a way that models</span>
+<span class="s">``urllib.parse.quote(safe=&quot;~&quot;)``. However, the Falcon function is faster</span>
+<span class="s">in the average case than the similar `quote` function found in urlib.</span>
+<span class="s">It also strives to be easier to use by assuming a sensible default</span>
+<span class="s">of allowed characters.</span>
+
+<span class="s">All reserved characters are lumped together into a single set of</span>
+<span class="s">&quot;delimiters&quot;, and everything in that set is escaped.</span>
+
+<span class="s">Note:</span>
+<span class="s">    RFC 3986 defines a set of &quot;unreserved&quot; characters as well as a</span>
+<span class="s">    set of &quot;reserved&quot; characters used as delimiters.</span>
+
+<span class="s">Args:</span>
+<span class="s">    uri (str): URI fragment to encode. It is assumed not to cross delimiter</span>
+<span class="s">        boundaries, and so any reserved URI delimiter characters</span>
+<span class="s">        included in it will be escaped. If `value` is a wide</span>
+<span class="s">        string (i.e., *six.text_type*), it will be encoded to</span>
+<span class="s">        a UTF-8 byte array and any multibyte sequences will</span>
+<span class="s">        be percent-encoded as-is.</span>
+
+<span class="s">Returns:</span>
+<span class="s">    str: An escaped version of `uri`, where all disallowed characters</span>
+<span class="s">        have been percent-encoded.</span>
+
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="c"># NOTE(kgriffs): This is actually covered, but not in py33; hence the pragma</span>
+<span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>  <span class="c"># pragma: no cover</span>
+
+    <span class="c"># This map construction is based on urllib</span>
+    <span class="n">_HEX_TO_BYTE</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="mi">16</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span>
+                        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">_HEX_DIGITS</span>
+                        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">_HEX_DIGITS</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">encoded_uri</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decodes percent-encoded characters in a URI or query string.</span>
+
+<span class="sd">        This function models the behavior of urllib.parse.unquote_plus, but</span>
+<span class="sd">        is faster. It is also more robust, in that it will decode escaped</span>
+<span class="sd">        UTF-8 mutibyte sequences.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            encoded_uri (str): An encoded URI (full or partial).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: A decoded URL. Will be of type *unicode* on Python 2 IFF the</span>
+<span class="sd">                URL contained escaped non-ASCII characters, in which case</span>
+<span class="sd">                UTF-8 is assumed per RFC 3986.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">decoded_uri</span> <span class="o">=</span> <span class="n">encoded_uri</span>
+
+        <span class="c"># PERF(kgriffs): Don&#39;t take the time to instantiate a new</span>
+        <span class="c"># string unless we have to.</span>
+        <span class="k">if</span> <span class="s">&#39;+&#39;</span> <span class="ow">in</span> <span class="n">decoded_uri</span><span class="p">:</span>
+            <span class="n">decoded_uri</span> <span class="o">=</span> <span class="n">decoded_uri</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;+&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span>
+
+        <span class="c"># Short-circuit if we can</span>
+        <span class="k">if</span> <span class="s">&#39;%&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">decoded_uri</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">decoded_uri</span>
+
+        <span class="c"># Convert to bytes because we are about to replace chars and we</span>
+        <span class="c"># don&#39;t want Python to mistakenly interpret any high bits.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decoded_uri</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c"># NOTE(kgriffs): Clients should never submit a URI that has</span>
+            <span class="c"># unescaped non-ASCII chars in them, but just in case they</span>
+            <span class="c"># do, let&#39;s encode in a non-lossy format.</span>
+            <span class="n">decoded_uri</span> <span class="o">=</span> <span class="n">decoded_uri</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+
+        <span class="n">only_ascii</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">decoded_uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;%&#39;</span><span class="p">)</span>
+        <span class="n">decoded_uri</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">char</span><span class="p">,</span> <span class="n">byte</span> <span class="o">=</span> <span class="n">_HEX_TO_BYTE</span><span class="p">[</span><span class="n">token</span><span class="p">[:</span><span class="mi">2</span><span class="p">]]</span>
+            <span class="n">decoded_uri</span> <span class="o">+=</span> <span class="n">char</span> <span class="o">+</span> <span class="n">token</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+
+            <span class="k">if</span> <span class="n">only_ascii</span><span class="p">:</span>
+                <span class="n">only_ascii</span> <span class="o">=</span> <span class="p">(</span><span class="n">byte</span> <span class="o">&lt;=</span> <span class="mi">127</span><span class="p">)</span>
+
+        <span class="c"># PERF(kgriffs): Only spend the time to do this if there</span>
+        <span class="c"># were non-ascii bytes found in the string.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">only_ascii</span><span class="p">:</span>
+            <span class="n">decoded_uri</span> <span class="o">=</span> <span class="n">decoded_uri</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;replace&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">decoded_uri</span>
+
+<span class="c"># NOTE(kgriffs): This is actually covered, but not in py2x; hence the pragma</span>
+
+<span class="k">else</span><span class="p">:</span>  <span class="c"># pragma: no cover</span>
+
+    <span class="c"># This map construction is based on urllib</span>
+    <span class="n">_HEX_TO_BYTE</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(((</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="nb">bytes</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="mi">16</span><span class="p">)]))</span>
+                        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">_HEX_DIGITS</span>
+                        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">_HEX_DIGITS</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_unescape</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+        <span class="c"># NOTE(kgriffs): Strip &#39;%&#39; and convert the hex number</span>
+        <span class="k">return</span> <span class="n">_HEX_TO_BYTE</span><span class="p">[</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]]</span>
+
+<div class="viewcode-block" id="decode"><a class="viewcode-back" href="../../../api/util.html#falcon.util.uri.decode">[docs]</a>    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">encoded_uri</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decodes percent-encoded characters in a URI or query string.</span>
+
+<span class="sd">        This function models the behavior of `urllib.parse.unquote_plus`,</span>
+<span class="sd">        albeit in a faster, more straightforward manner.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            encoded_uri (str): An encoded URI (full or partial).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: A decoded URL. If the URL contains escaped non-ASCII</span>
+<span class="sd">            characters, UTF-8 is assumed per RFC 3986.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">decoded_uri</span> <span class="o">=</span> <span class="n">encoded_uri</span>
+
+        <span class="c"># PERF(kgriffs): Don&#39;t take the time to instantiate a new</span>
+        <span class="c"># string unless we have to.</span>
+        <span class="k">if</span> <span class="s">&#39;+&#39;</span> <span class="ow">in</span> <span class="n">decoded_uri</span><span class="p">:</span>
+            <span class="n">decoded_uri</span> <span class="o">=</span> <span class="n">decoded_uri</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;+&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span>
+
+        <span class="c"># Short-circuit if we can</span>
+        <span class="k">if</span> <span class="s">&#39;%&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">decoded_uri</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">decoded_uri</span>
+
+        <span class="c"># NOTE(kgriffs): Clients should never submit a URI that has</span>
+        <span class="c"># unescaped non-ASCII chars in them, but just in case they</span>
+        <span class="c"># do, let&#39;s encode into a non-lossy format.</span>
+        <span class="n">decoded_uri</span> <span class="o">=</span> <span class="n">decoded_uri</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+
+        <span class="c"># PERF(kgriffs): This was found to be faster than using</span>
+        <span class="c"># a regex sub call or list comprehension with a join.</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">decoded_uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;%&#39;</span><span class="p">)</span>
+        <span class="n">decoded_uri</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">decoded_uri</span> <span class="o">+=</span> <span class="n">_HEX_TO_BYTE</span><span class="p">[</span><span class="n">token</span><span class="p">[:</span><span class="mi">2</span><span class="p">]]</span> <span class="o">+</span> <span class="n">token</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+
+        <span class="c"># Convert back to str</span>
+        <span class="k">return</span> <span class="n">decoded_uri</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;replace&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="parse_query_string"><a class="viewcode-back" href="../../../api/util.html#falcon.util.uri.parse_query_string">[docs]</a><span class="k">def</span> <span class="nf">parse_query_string</span><span class="p">(</span><span class="n">query_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse a query string into a dict.</span>
+
+<span class="sd">    Query string parameters are assumed to use standard form-encoding. Only</span>
+<span class="sd">    parameters with values are parsed. for example, given &quot;foo=bar&amp;flag&quot;,</span>
+<span class="sd">    this function would ignore &quot;flag&quot;.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        In addition to the standard HTML form-based method for specifying</span>
+<span class="sd">        lists by repeating a given param multiple times, Falcon supports</span>
+<span class="sd">        a more compact form in which the param may be given a single time</span>
+<span class="sd">        but set to a list of comma-separated elements (e.g., &#39;foo=a,b,c&#39;).</span>
+
+<span class="sd">        The two different ways of specifying lists may not be mixed in</span>
+<span class="sd">        a single query string for the same parameter.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        query_string (str): The query string to parse</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dict containing ``(name, value)`` tuples, one per query</span>
+<span class="sd">            parameter. Note that *value* will be a string or list of</span>
+<span class="sd">            strings.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: query_string was not a string or buffer</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># PERF(kgriffs): A for loop is faster than using array or dict</span>
+    <span class="c"># comprehensions (tested under py27, py33). Go figure!</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_QS_PATTERN</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">query_string</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+            <span class="c"># The key was present more than once in the POST data.  Convert to</span>
+            <span class="c"># a list, or append the next value to the list.</span>
+            <span class="n">old_value</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">old_value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">old_value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">old_value</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s">&#39;,&#39;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="c"># NOTE(kgriffs): Falcon supports a more compact form of</span>
+                <span class="c"># lists, in which the elements are comma-separated and</span>
+                <span class="c"># assigned to a single param instance. If it turns out that</span>
+                <span class="c"># very few people use this, it can be deprecated at some</span>
+                <span class="c"># point.</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+
+                <span class="c"># NOTE(kgriffs): Normalize the result in the case that</span>
+                <span class="c"># some elements are empty strings, such that the result</span>
+                <span class="c"># will be the same for &#39;foo=1,,3&#39; as &#39;foo=1&amp;foo=&amp;foo=3&#39;.</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">v</span> <span class="k">if</span> <span class="n">element</span><span class="p">]</span>
+
+            <span class="n">params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">return</span> <span class="n">params</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../../../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../../../index.html"><img class="logo" src="../../../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../falcon.html">falcon</a><ul>
+  <li><a href="../util.html">falcon.util</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

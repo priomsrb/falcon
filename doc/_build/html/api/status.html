@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Status Codes &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../index.html" />
+    <link rel="next" title="Error Handling" href="errors.html" />
+    <link rel="prev" title="Req/Resp" href="request_and_response.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="errors.html" title="Error Handling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="request_and_response.html" title="Req/Resp"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="status-codes">
+<span id="status"></span><h1>Status Codes<a class="headerlink" href="#status-codes" title="Permalink to this headline">¶</a></h1>
+<p>Falcon provides a list of constants for common
+<a class="reference external" href="http://httpstatus.es">HTTP response status codes</a>
+that you can use like so:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Override the default &quot;200 OK&quot; response status</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_409</span>
+</pre></div>
+</div>
+<div class="section" id="xx-informational">
+<h2>1xx Informational<a class="headerlink" href="#xx-informational" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">HTTP_100</span> <span class="o">=</span> <span class="s">&#39;100 Continue&#39;</span>
+<span class="n">HTTP_101</span> <span class="o">=</span> <span class="s">&#39;101 Switching Protocols&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="xx-success">
+<h2>2xx Success<a class="headerlink" href="#xx-success" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">HTTP_200</span> <span class="o">=</span> <span class="s">&#39;200 OK&#39;</span>
+<span class="n">HTTP_201</span> <span class="o">=</span> <span class="s">&#39;201 Created&#39;</span>
+<span class="n">HTTP_202</span> <span class="o">=</span> <span class="s">&#39;202 Accepted&#39;</span>
+<span class="n">HTTP_203</span> <span class="o">=</span> <span class="s">&#39;203 Non-Authoritative Information&#39;</span>
+<span class="n">HTTP_204</span> <span class="o">=</span> <span class="s">&#39;204 No Content&#39;</span>
+<span class="n">HTTP_205</span> <span class="o">=</span> <span class="s">&#39;205 Reset Content&#39;</span>
+<span class="n">HTTP_206</span> <span class="o">=</span> <span class="s">&#39;206 Partial Content&#39;</span>
+<span class="n">HTTP_226</span> <span class="o">=</span> <span class="s">&#39;226 IM Used&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="xx-redirection">
+<h2>3xx Redirection<a class="headerlink" href="#xx-redirection" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">HTTP_300</span> <span class="o">=</span> <span class="s">&#39;300 Multiple Choices&#39;</span>
+<span class="n">HTTP_301</span> <span class="o">=</span> <span class="s">&#39;301 Moved Permanently&#39;</span>
+<span class="n">HTTP_302</span> <span class="o">=</span> <span class="s">&#39;302 Found&#39;</span>
+<span class="n">HTTP_303</span> <span class="o">=</span> <span class="s">&#39;303 See Other&#39;</span>
+<span class="n">HTTP_304</span> <span class="o">=</span> <span class="s">&#39;304 Not Modified&#39;</span>
+<span class="n">HTTP_305</span> <span class="o">=</span> <span class="s">&#39;305 Use Proxy&#39;</span>
+<span class="n">HTTP_307</span> <span class="o">=</span> <span class="s">&#39;307 Temporary Redirect&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="xx-client-error">
+<h2>4xx Client Error<a class="headerlink" href="#xx-client-error" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">HTTP_400</span> <span class="o">=</span> <span class="s">&#39;400 Bad Request&#39;</span>
+<span class="n">HTTP_401</span> <span class="o">=</span> <span class="s">&#39;401 Unauthorized&#39;</span>  <span class="c"># &lt;-- Really means &quot;unauthenticated&quot;</span>
+<span class="n">HTTP_402</span> <span class="o">=</span> <span class="s">&#39;402 Payment Required&#39;</span>
+<span class="n">HTTP_403</span> <span class="o">=</span> <span class="s">&#39;403 Forbidden&#39;</span>  <span class="c"># &lt;-- Really means &quot;unauthorized&quot;</span>
+<span class="n">HTTP_404</span> <span class="o">=</span> <span class="s">&#39;404 Not Found&#39;</span>
+<span class="n">HTTP_405</span> <span class="o">=</span> <span class="s">&#39;405 Method Not Allowed&#39;</span>
+<span class="n">HTTP_406</span> <span class="o">=</span> <span class="s">&#39;406 Not Acceptable&#39;</span>
+<span class="n">HTTP_407</span> <span class="o">=</span> <span class="s">&#39;407 Proxy Authentication Required&#39;</span>
+<span class="n">HTTP_408</span> <span class="o">=</span> <span class="s">&#39;408 Request Time-out&#39;</span>
+<span class="n">HTTP_409</span> <span class="o">=</span> <span class="s">&#39;409 Conflict&#39;</span>
+<span class="n">HTTP_410</span> <span class="o">=</span> <span class="s">&#39;410 Gone&#39;</span>
+<span class="n">HTTP_411</span> <span class="o">=</span> <span class="s">&#39;411 Length Required&#39;</span>
+<span class="n">HTTP_412</span> <span class="o">=</span> <span class="s">&#39;412 Precondition Failed&#39;</span>
+<span class="n">HTTP_413</span> <span class="o">=</span> <span class="s">&#39;413 Payload Too Large&#39;</span>
+<span class="n">HTTP_414</span> <span class="o">=</span> <span class="s">&#39;414 URI Too Long&#39;</span>
+<span class="n">HTTP_415</span> <span class="o">=</span> <span class="s">&#39;415 Unsupported Media Type&#39;</span>
+<span class="n">HTTP_416</span> <span class="o">=</span> <span class="s">&#39;416 Range Not Satisfiable&#39;</span>
+<span class="n">HTTP_417</span> <span class="o">=</span> <span class="s">&#39;417 Expectation Failed&#39;</span>
+<span class="n">HTTP_418</span> <span class="o">=</span> <span class="s">&quot;418 I&#39;m a teapot&quot;</span>
+<span class="n">HTTP_426</span> <span class="o">=</span> <span class="s">&#39;426 Upgrade Required&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="xx-server-error">
+<h2>5xx Server Error<a class="headerlink" href="#xx-server-error" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">HTTP_500</span> <span class="o">=</span> <span class="s">&#39;500 Internal Server Error&#39;</span>
+<span class="n">HTTP_501</span> <span class="o">=</span> <span class="s">&#39;501 Not Implemented&#39;</span>
+<span class="n">HTTP_502</span> <span class="o">=</span> <span class="s">&#39;502 Bad Gateway&#39;</span>
+<span class="n">HTTP_503</span> <span class="o">=</span> <span class="s">&#39;503 Service Unavailable&#39;</span>
+<span class="n">HTTP_504</span> <span class="o">=</span> <span class="s">&#39;504 Gateway Time-out&#39;</span>
+<span class="n">HTTP_505</span> <span class="o">=</span> <span class="s">&#39;505 HTTP Version not supported&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../index.html"><img class="logo" src="../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Status Codes</a><ul>
+<li><a class="reference internal" href="#xx-informational">1xx Informational</a></li>
+<li><a class="reference internal" href="#xx-success">2xx Success</a></li>
+<li><a class="reference internal" href="#xx-redirection">3xx Redirection</a></li>
+<li><a class="reference internal" href="#xx-client-error">4xx Client Error</a></li>
+<li><a class="reference internal" href="#xx-server-error">5xx Server Error</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="request_and_response.html" title="previous chapter">Req/Resp</a></li>
+      <li>Next: <a href="errors.html" title="next chapter">Error Handling</a></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

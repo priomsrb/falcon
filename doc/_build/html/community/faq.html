@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Questions &amp; Answers &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../index.html" />
+    <link rel="next" title="Introduction" href="../user/intro.html" />
+    <link rel="prev" title="Contribute to Falcon" href="contribute.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../user/intro.html" title="Introduction"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="contribute.html" title="Contribute to Falcon"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="questions-answers">
+<span id="faq"></span><h1>Questions &amp; Answers<a class="headerlink" href="#questions-answers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-do-i-use-wsgi-middleware-with-falcon">
+<h2>How do I use WSGI middleware with Falcon?<a class="headerlink" href="#how-do-i-use-wsgi-middleware-with-falcon" title="Permalink to this headline">¶</a></h2>
+<p>Instances of <cite>falcon.API</cite> are first-class WSGI apps, so you can use the
+standard pattern outlined in PEP-3333. In your main &#8220;app&#8221; file, you would
+simply wrap your api instance with a middleware app. For example:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">my_restful_service</span>
+<span class="kn">import</span> <span class="nn">some_middleware</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">some_middleware</span><span class="o">.</span><span class="n">DoSomethingFancy</span><span class="p">(</span><span class="n">my_restful_service</span><span class="o">.</span><span class="n">api</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See also the <a class="reference external" href="http://legacy.python.org/dev/peps/pep-3333/#middleware-components-that-play-both-sides">WSGI middleware example</a> given in PEP-3333. Note that use of Paste for wiring up
+middleware is discouraged these days, because that package is not
+well-maintained, and is incompatible with Python 3.</p>
+</div>
+<div class="section" id="why-doesn-t-falcon-include-x">
+<h2>Why doesn&#8217;t Falcon include X?<a class="headerlink" href="#why-doesn-t-falcon-include-x" title="Permalink to this headline">¶</a></h2>
+<p>The Falcon framework lets you decide your own answers to questions like:</p>
+<ul class="simple">
+<li>JSON or MessagePack?</li>
+<li>konval or jsonschema?</li>
+<li>Mongothon or Monk?</li>
+<li>Storm, SQLAlchemy or peewee?</li>
+<li>Jinja or Tenjin?</li>
+<li>python-multipart or cgi.FieldStorage?</li>
+<li>gevent or eventlet?</li>
+</ul>
+<p>The Python ecosytem offers a bunch of great libraries that you
+are welcome to use from within your responders and hooks.
+Falcon doesn&#8217;t try to dictate what you should use, since that would take
+away your freedom to choose the best tool for the job.</p>
+</div>
+<div class="section" id="how-do-i-authenticate-requests">
+<h2>How do I authenticate requests?<a class="headerlink" href="#how-do-i-authenticate-requests" title="Permalink to this headline">¶</a></h2>
+<p>You can use a <em>before</em> hook to authenticate and authorize requests. Hooks
+have full access to the Request and Response objects.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">auth</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_header</span><span class="p">(</span><span class="s">&#39;X-Auth-Token&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Please provide an auth token &#39;</span>
+                       <span class="s">&#39;as part of the request.&#39;</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="s">&#39;Auth token required&#39;</span><span class="p">,</span>
+                                      <span class="n">description</span><span class="p">,</span>
+                                      <span class="n">href</span><span class="o">=</span><span class="s">&#39;http://docs.example.com/auth&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">token_is_valid</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;user_id&#39;</span><span class="p">]):</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;The provided auth token is not valid. &#39;</span>
+                       <span class="s">&#39;Please request a new token and try again.&#39;</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="s">&#39;Authentication required&#39;</span><span class="p">,</span>
+                                      <span class="n">description</span><span class="p">,</span>
+                                      <span class="n">href</span><span class="o">=</span><span class="s">&#39;http://docs.example.com/auth&#39;</span><span class="p">,</span>
+                                      <span class="n">scheme</span><span class="o">=</span><span class="s">&#39;Token; UUID&#39;</span><span class="p">)</span>
+
+    <span class="n">authorized_projects</span> <span class="o">=</span> <span class="n">get_projects</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_header</span><span class="p">(</span><span class="s">&#39;X-Project-ID&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">project</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">authorized_projects</span><span class="p">:</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="s">&#39;The requested project ID could not be found.&#39;</span>
+        <span class="k">raise</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTPForbidden</span><span class="p">(</span><span class="s">&#39;Unknown Project ID&#39;</span><span class="p">,</span>
+                                    <span class="n">description</span><span class="p">,</span>
+                                    <span class="n">href</span><span class="o">=</span><span class="s">&#39;http://docs.example.com/headers&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="is-falcon-thread-safe">
+<h2>Is Falcon thread-safe?<a class="headerlink" href="#is-falcon-thread-safe" title="Permalink to this headline">¶</a></h2>
+<p>New Request and Response objects are created for each incoming HTTP request.
+However, a single instance of each resource class attached to a route is
+shared among all requests. Therefore, as long as you are careful about the
+way responders access class member variables to avoid conflicts, your
+WSGI app should be thread-safe.</p>
+<p>That being said, Falcon-based services are usually deployed using green
+threads (via the gevent library or similar) which aren&#8217;t truly running
+concurrently, so there may be some edge cases where Falcon is not
+thread-safe that haven&#8217;t been discovered yet.</p>
+<p><em>Caveat emptor!</em></p>
+</div>
+<div class="section" id="why-doesn-t-falcon-create-a-new-resource-instance-for-every-request">
+<h2>Why doesn&#8217;t Falcon create a new Resource instance for every request?<a class="headerlink" href="#why-doesn-t-falcon-create-a-new-resource-instance-for-every-request" title="Permalink to this headline">¶</a></h2>
+<p>Falcon generally tries to minimize the number of objects that it
+instantiates. It does this for two reasons: first, to avoid the expense of
+creating the object, and second to mitigate memory fragmentation.</p>
+<p>Therefore, when adding a route, Falcon requires an <em>instance</em> of your
+resource class, rather than the class type. That same instance will be used
+to server all requests coming in on that route.</p>
+</div>
+<div class="section" id="how-do-i-implement-both-posting-and-geting-items-for-the-same-resource">
+<h2>How do I implement both POSTing and GETing items for the same resource?<a class="headerlink" href="#how-do-i-implement-both-posting-and-geting-items-for-the-same-resource" title="Permalink to this headline">¶</a></h2>
+<p>Suppose you wanted to implement the following endpoints:</p>
+<div class="highlight-python"><div class="highlight"><pre># Resource Collection
+POST /resources
+GET /resources{?marker, limit}
+
+# Resource Item
+GET /resources/{id}
+PATCH /resources/{id}
+DELETE /resources/{id}
+</pre></div>
+</div>
+<p>You can implement this sort of API by simply using two Python classes, one
+to represent a single resource, and another to represent the collection of
+said resources. It is common to place both classes in the same module.</p>
+<p>The Falcon community did some experimenting with routing both singleton
+and collection-based operations to the same Python class, but it turned
+out to make routing definitions more complicated/less intuitive.</p>
+<p>See also <a class="reference internal" href="../user/tutorial.html#tutorial-serving-images"><em>this section of the tutorial</em></a>.</p>
+</div>
+<div class="section" id="how-can-i-pass-data-from-a-hook-to-a-responder-and-between-hooks">
+<h2>How can I pass data from a hook to a responder, and between hooks?<a class="headerlink" href="#how-can-i-pass-data-from-a-hook-to-a-responder-and-between-hooks" title="Permalink to this headline">¶</a></h2>
+<p>You can inject extra responder kwargs from a hook by adding them
+to the <em>params</em> dict passed into the hook. You can also add custom data to
+the req.env WSGI dict, as a way of passing contextual information around.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Falcon 0.2 will add a &#8220;context&#8221; dict to Request to provide a cleaner
+alternative to using req.env.</p>
+</div>
+</div>
+<div class="section" id="does-falcon-set-content-length-or-do-i-need-to-do-that-explicitly">
+<h2>Does Falcon set Content-Length or do I need to do that explicitly?<a class="headerlink" href="#does-falcon-set-content-length-or-do-i-need-to-do-that-explicitly" title="Permalink to this headline">¶</a></h2>
+<p>Falcon will try to do this for you, based on the value of <cite>resp.body</cite>,
+<cite>resp.data</cite>, or <cite>resp.stream_len</cite> (whichever is set in the response, checked
+in that order.)</p>
+<p>For dynamically-generated content, you can choose to leave off <cite>stream_len</cite>,
+in which case Falcon will then leave off the Content-Length header, and
+hopefully your WSGI server will do the Right Thing™ (assuming you&#8217;ve told
+it to enable keep-alive).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">PEP-333 prohibits apps from setting hop-by-hop headers itself,
+such as Transfer-Encoding.</p>
+</div>
+</div>
+<div class="section" id="i-m-setting-a-response-body-but-it-isn-t-getting-returned-what-s-going-on">
+<h2>I&#8217;m setting a response body, but it isn&#8217;t getting returned. What&#8217;s going on?<a class="headerlink" href="#i-m-setting-a-response-body-but-it-isn-t-getting-returned-what-s-going-on" title="Permalink to this headline">¶</a></h2>
+<p>Falcon skips processing the response body to save a few cycles when the HTTP
+spec defines that the response should <em>have</em> no body. First, if the client
+sends a HEAD request, the response body will be empty. Second, if the response
+status set by a resource is one of the following, Falcon will skip processing
+the response body:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_100</span>
+<span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_204</span>
+<span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_416</span>
+<span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_304</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="why-does-raising-an-error-inside-a-resource-crash-my-app">
+<h2>Why does raising an error inside a resource crash my app?<a class="headerlink" href="#why-does-raising-an-error-inside-a-resource-crash-my-app" title="Permalink to this headline">¶</a></h2>
+<p>Generally speaking, Falcon assumes that resource responders (such as <em>on_get</em>,
+<em>on_post</em>, etc.) will, for the most part, do the right thing. In other words,
+Falcon doesn&#8217;t try very hard to protect responder code from itself.</p>
+<p>This approach reduces the number of (often) extraneous checks that Falcon
+would otherwise have to perform, making the framework more efficient. With
+that in mind, writing a high-quality API based on Falcon requires that:</p>
+<ol class="arabic simple">
+<li>Resource responders set response variables to sane values.</li>
+<li>Your code is well-tested, with high code coverage.</li>
+<li>Errors are anticipated, detected, and handled appropriately within
+each responder and with the aid of custom error handlers.</li>
+</ol>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Falcon will re-raise errors that do not inherit from
+<tt class="docutils literal"><span class="pre">falcon.HTTPError</span></tt> unless you have registered a custom error
+handler for that type (see also: <a class="reference internal" href="../api/api.html#api"><em>falcon.API</em></a>).</p>
+</div>
+</div>
+<div class="section" id="why-are-trailing-slashes-trimmed-from-req-path">
+<h2>Why are trailing slashes trimmed from req.path?<a class="headerlink" href="#why-are-trailing-slashes-trimmed-from-req-path" title="Permalink to this headline">¶</a></h2>
+<p>Falcon normalizes incoming URI paths to simplify later processing and
+improve the predictability of application logic. In addition to stripping
+a trailing slashes, if any, Falcon will convert empty paths to &#8216;/&#8217;.</p>
+<p>Note also that routing is also normalized, so adding a route for &#8216;/foo/bar&#8217;
+also implicitly adds a route for &#8216;/foo/bar/&#8217;. Requests coming in for either
+path will be sent to the same resource.</p>
+</div>
+<div class="section" id="why-are-field-names-in-uri-templates-restricted-to-certain-characters">
+<h2>Why are field names in URI templates restricted to certain characters?<a class="headerlink" href="#why-are-field-names-in-uri-templates-restricted-to-certain-characters" title="Permalink to this headline">¶</a></h2>
+<p>Field names are restricted to the ASCII characters a-z, A-Z, and &#8216;_&#8217;. Using a
+restricted set of characters reduces the overhead of parsing incoming
+requests.</p>
+</div>
+<div class="section" id="why-is-my-query-parameter-missing-from-the-req-object">
+<h2>Why is my query parameter missing from the req object?<a class="headerlink" href="#why-is-my-query-parameter-missing-from-the-req-object" title="Permalink to this headline">¶</a></h2>
+<p>If a query params does not have a value, Falcon will treat it as though the
+param were omitted completely from the URI. For example, &#8216;foo&#8217; or &#8216;foo=&#8217; will
+result in the parameter being ignored.</p>
+</div>
+<div class="section" id="is-there-a-way-for-me-to-ensure-headers-are-sent-to-clients-in-a-specific-order">
+<h2>Is there a way for me to ensure headers are sent to clients in a specific order?<a class="headerlink" href="#is-there-a-way-for-me-to-ensure-headers-are-sent-to-clients-in-a-specific-order" title="Permalink to this headline">¶</a></h2>
+<p>In order to generate HTTP responses as quickly as possible, Falcon does not
+try to sort or even logically group related headers in the HTTP response.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../index.html"><img class="logo" src="../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Questions &amp; Answers</a><ul>
+<li><a class="reference internal" href="#how-do-i-use-wsgi-middleware-with-falcon">How do I use WSGI middleware with Falcon?</a></li>
+<li><a class="reference internal" href="#why-doesn-t-falcon-include-x">Why doesn&#8217;t Falcon include X?</a></li>
+<li><a class="reference internal" href="#how-do-i-authenticate-requests">How do I authenticate requests?</a></li>
+<li><a class="reference internal" href="#is-falcon-thread-safe">Is Falcon thread-safe?</a></li>
+<li><a class="reference internal" href="#why-doesn-t-falcon-create-a-new-resource-instance-for-every-request">Why doesn&#8217;t Falcon create a new Resource instance for every request?</a></li>
+<li><a class="reference internal" href="#how-do-i-implement-both-posting-and-geting-items-for-the-same-resource">How do I implement both POSTing and GETing items for the same resource?</a></li>
+<li><a class="reference internal" href="#how-can-i-pass-data-from-a-hook-to-a-responder-and-between-hooks">How can I pass data from a hook to a responder, and between hooks?</a></li>
+<li><a class="reference internal" href="#does-falcon-set-content-length-or-do-i-need-to-do-that-explicitly">Does Falcon set Content-Length or do I need to do that explicitly?</a></li>
+<li><a class="reference internal" href="#i-m-setting-a-response-body-but-it-isn-t-getting-returned-what-s-going-on">I&#8217;m setting a response body, but it isn&#8217;t getting returned. What&#8217;s going on?</a></li>
+<li><a class="reference internal" href="#why-does-raising-an-error-inside-a-resource-crash-my-app">Why does raising an error inside a resource crash my app?</a></li>
+<li><a class="reference internal" href="#why-are-trailing-slashes-trimmed-from-req-path">Why are trailing slashes trimmed from req.path?</a></li>
+<li><a class="reference internal" href="#why-are-field-names-in-uri-templates-restricted-to-certain-characters">Why are field names in URI templates restricted to certain characters?</a></li>
+<li><a class="reference internal" href="#why-is-my-query-parameter-missing-from-the-req-object">Why is my query parameter missing from the req object?</a></li>
+<li><a class="reference internal" href="#is-there-a-way-for-me-to-ensure-headers-are-sent-to-clients-in-a-specific-order">Is there a way for me to ensure headers are sent to clients in a specific order?</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="contribute.html" title="previous chapter">Contribute to Falcon</a></li>
+      <li>Next: <a href="../user/intro.html" title="next chapter">Introduction</a></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>

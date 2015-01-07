@@ -1,0 +1,649 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Error Handling &mdash; Falcon 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="Falcon 0.2.0 documentation" href="../index.html" />
+    <link rel="next" title="Hooks" href="hooks.html" />
+    <link rel="prev" title="Status Codes" href="status.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="hooks.html" title="Hooks"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="status.html" title="Status Codes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Falcon 0.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="error-handling">
+<span id="errors"></span><h1>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h1>
+<p>When something goes horribly (or mildly) wrong, you <em>could</em> manually set the
+error status, appropriate response headers, and even an error body using the
+<tt class="docutils literal"><span class="pre">resp</span></tt> object. However, Falcon tries to make things a bit easier by
+providing a set of exceptions you can raise when something goes wrong. In fact,
+if Falcon catches any exception your responder throws that inherits from
+<tt class="docutils literal"><span class="pre">falcon.HTTPError</span></tt>, the framework will convert that exception to an
+appropriate HTTP error response.</p>
+<p>You may raise an instance of <tt class="docutils literal"><span class="pre">falcon.HTTPError</span></tt> directly, or use any one
+of a number of predefined error classes that try to be idiomatic in
+setting appropriate headers and bodies.</p>
+<div class="section" id="base-class">
+<h2>Base Class<a class="headerlink" href="#base-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="falcon.HTTPError">
+<em class="property">class </em><tt class="descclassname">falcon.</tt><tt class="descname">HTTPError</tt><big>(</big><em>status</em>, <em>title</em>, <em>description=None</em>, <em>headers=None</em>, <em>href=None</em>, <em>href_text=None</em>, <em>code=None</em><big>)</big><a class="headerlink" href="#falcon.HTTPError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a generic HTTP error.</p>
+<p>Raise this or a child class to have Falcon automagically return pretty
+error responses (with an appropriate HTTP status code) to the client
+when something goes wrong.</p>
+<dl class="attribute">
+<dt id="HTTPError.status">
+<tt class="descname">status</tt><em class="property"> str</em><a class="headerlink" href="#HTTPError.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP status line, such as &#8220;748 Confounded by Ponies&#8221;.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="HTTPError.title">
+<tt class="descname">title</tt><em class="property"> str</em><a class="headerlink" href="#HTTPError.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error title to send to the client.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="HTTPError.description">
+<tt class="descname">description</tt><em class="property"> str</em><a class="headerlink" href="#HTTPError.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description of the error to send to the client.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="HTTPError.headers">
+<tt class="descname">headers</tt><em class="property"> dict</em><a class="headerlink" href="#HTTPError.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extra headers to add to the response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="HTTPError.link">
+<tt class="descname">link</tt><em class="property"> str</em><a class="headerlink" href="#HTTPError.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>An href that the client can provide to the user for
+getting help.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="HTTPError.code">
+<tt class="descname">code</tt><em class="property"> int</em><a class="headerlink" href="#HTTPError.code" title="Permalink to this definition">¶</a></dt>
+<dd><p>An internal application code that a user can reference when
+requesting support for the error.</p>
+</dd></dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>status</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; HTTP status code and text, such as &#8220;400 Bad Request&#8221;</li>
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly error title. Set to <em>None</em> if you wish
+Falcon to return an empty response body (all remaining args will
+be ignored except for headers.) Do this only when you don&#8217;t
+wish to disclose sensitive information about why a request was
+refused, or if the status and headers are self-descriptive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last">
+<li><p class="first"><strong>description</strong> (<em>str</em>) &#8211;
+Human-friendly description of the error, along with
+a helpful suggestion or two (default <em>None</em>).</p>
+</li>
+<li><p class="first"><strong>headers</strong> (<em>dict or list</em>) &#8211;
+A dictionary of header names and values
+to set, or list of (name, value) tuples. Both names and
+values must be of type str or StringType, and only character
+values 0x00 through 0xFF may be used on platforms that use
+wide characters.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Content-Type header, if present, will be overriden. If
+you wish to return custom error messages, you can create
+your own HTTP error class, and install an error handler
+to convert it into an appropriate HTTP response for the
+client</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Falcon can process a list of tuples slightly faster
+than a dict.</p>
+</div>
+</li>
+<li><p class="first"><strong>headers</strong> (<em>dict</em>) &#8211;
+Extra headers to return in the
+response to the client (default <em>None</em>).</p>
+</li>
+<li><p class="first"><strong>href</strong> (<em>str</em>) &#8211;
+A URL someone can visit to find out more information
+(default <em>None</em>). Unicode characters are percent-encoded.</p>
+</li>
+<li><p class="first"><strong>href_text</strong> (<em>str</em>) &#8211;
+If href is given, use this as the friendly
+title/description for the link (defaults to &#8220;API documentation
+for this error&#8221;).</p>
+</li>
+<li><p class="first"><strong>code</strong> (<em>int</em>) &#8211;
+An internal code that customers can reference in their
+support request or to help them when searching for knowledge
+base articles related to this error.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="falcon.HTTPError.json">
+<tt class="descname">json</tt><big>(</big><big>)</big><a class="headerlink" href="#falcon.HTTPError.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a pretty JSON-encoded version of the exception</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A JSON representation of the exception, or
+None if title was set to <em>None</em> in the initializer.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="falcon.HTTPError.xml">
+<tt class="descname">xml</tt><big>(</big><big>)</big><a class="headerlink" href="#falcon.HTTPError.xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an XML-encoded version of the exception</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An XML representation of the exception, or
+None if title was set to <em>None</em> in the initializer.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-falcon.exceptions">
+<span id="predefined-errors"></span><h2>Predefined Errors<a class="headerlink" href="#module-falcon.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPBadRequest">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPBadRequest</tt><big>(</big><em>title</em>, <em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPBadRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPBadRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>400 Bad Request.</p>
+<p>The request could not be understood by the server due to malformed
+syntax. The client SHOULD NOT repeat the request without
+modifications. (RFC 2616)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Error title, for example: &#8216;TTL Out of Range&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPUnauthorized">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPUnauthorized</tt><big>(</big><em>title</em>, <em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPUnauthorized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPUnauthorized" title="Permalink to this definition">¶</a></dt>
+<dd><p>401 Unauthorized.</p>
+<p>Use when authentication is required, and the provided credentials are
+not valid, or no credentials were provided in the first place.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Error title, for example: &#8216;Authentication Required&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>scheme</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Authentication scheme to use as the value of the
+WWW-Authenticate header in the response (default <em>None</em>).</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPForbidden">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPForbidden</tt><big>(</big><em>title</em>, <em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPForbidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPForbidden" title="Permalink to this definition">¶</a></dt>
+<dd><p>403 Forbidden.</p>
+<p>Use when the client&#8217;s credentials are good, but they do not have permission
+to access the requested resource.</p>
+<p>If the request method was not HEAD and the server wishes to make
+public why the request has not been fulfilled, it SHOULD describe the
+reason for the refusal in the entity.  If the server does not wish to
+make this information available to the client, the status code 404
+(Not Found) can be used instead. (RFC 2616)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Error title, for example: &#8216;Permission Denied&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPNotFound">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPNotFound</tt><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPNotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>404 Not Found.</p>
+<p>Use this when the URL path does not map to an existing resource, or you
+do not wish to disclose exactly why a request was refused.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPMethodNotAllowed">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPMethodNotAllowed</tt><big>(</big><em>allowed_methods</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPMethodNotAllowed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPMethodNotAllowed" title="Permalink to this definition">¶</a></dt>
+<dd><p>405 Method Not Allowed.</p>
+<p>The method specified in the Request-Line is not allowed for the
+resource identified by the Request-URI. The response MUST include an
+Allow header containing a list of valid methods for the requested
+resource. (RFC 2616)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>allowed_methods</strong> (<em>list of str</em>) &#8211; Allowed HTTP methods for this
+resource, for example: [&#8216;GET&#8217;, &#8216;POST&#8217;, &#8216;HEAD&#8217;].</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPNotAcceptable">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPNotAcceptable</tt><big>(</big><em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPNotAcceptable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPNotAcceptable" title="Permalink to this definition">¶</a></dt>
+<dd><p>406 Not Acceptable.</p>
+<p>The client requested a resource in a representation that is not
+supported by the server. The client must indicate a supported
+media type in the Accept header.</p>
+<p>The resource identified by the request is only capable of generating
+response entities which have content characteristics not acceptable
+according to the accept headers sent in the request. (RFC 2616)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPConflict">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPConflict</tt><big>(</big><em>title</em>, <em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPConflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPConflict" title="Permalink to this definition">¶</a></dt>
+<dd><p>409 Conflict.</p>
+<p>The request could not be completed due to a conflict with the current
+state of the resource. This code is only allowed in situations where
+it is expected that the user might be able to resolve the conflict
+and resubmit the request. The response body SHOULD include enough
+information for the user to recognize the source of the conflict.
+Ideally, the response entity would include enough information for the
+user or user agent to fix the problem; however, that might not be
+possible and is not required.</p>
+<p>Conflicts are most likely to occur in response to a PUT request. For
+example, if versioning were being used and the entity being PUT
+included changes to a resource which conflict with those made by an
+earlier (third-party) request, the server might use the 409 response
+to indicate that it can&#8217;t complete the request. In this case, the
+response entity would likely contain a list of the differences
+between the two versions in a format defined by the response
+Content-Type.</p>
+<p>(RFC 2616)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Error title, for example: &#8216;Editing Conflict&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPLengthRequired">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPLengthRequired</tt><big>(</big><em>title</em>, <em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPLengthRequired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPLengthRequired" title="Permalink to this definition">¶</a></dt>
+<dd><p>411 Length Required.</p>
+<p>The server refuses to accept the request without a defined
+Content-Length. The client MAY repeat the request if it adds a
+valid Content-Length header field containing the length of the
+message-body in the request message. (RFC 2616)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Error title, for example: &#8216;Missing Content-Length&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPPreconditionFailed">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPPreconditionFailed</tt><big>(</big><em>title</em>, <em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPPreconditionFailed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPPreconditionFailed" title="Permalink to this definition">¶</a></dt>
+<dd><p>412 Precondition Failed.</p>
+<p>The precondition given in one or more of the request-header fields
+evaluated to false when it was tested on the server. This response
+code allows the client to place preconditions on the current resource
+metainformation (header field data) and thus prevent the requested
+method from being applied to a resource other than the one intended.
+(RFC 2616)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Error title, for example: &#8216;Image Not Modified&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPUnsupportedMediaType">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPUnsupportedMediaType</tt><big>(</big><em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPUnsupportedMediaType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPUnsupportedMediaType" title="Permalink to this definition">¶</a></dt>
+<dd><p>415 Unsupported Media Type.</p>
+<p>The client is trying to submit a resource encoded as an Internet media
+type that the server does not support.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPRangeNotSatisfiable">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPRangeNotSatisfiable</tt><big>(</big><em>resource_length</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPRangeNotSatisfiable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPRangeNotSatisfiable" title="Permalink to this definition">¶</a></dt>
+<dd><p>416 Range Not Satisfiable.</p>
+<p>The requested range is not valid. See also: <a class="reference external" href="http://goo.gl/Qsa4EF">http://goo.gl/Qsa4EF</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_length</strong> &#8211; The maximum value for the last-byte-pos of a range
+request. Used to set the Content-Range header.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPInternalServerError">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPInternalServerError</tt><big>(</big><em>title</em>, <em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPInternalServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPInternalServerError" title="Permalink to this definition">¶</a></dt>
+<dd><p>500 Internal Server Error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Error title, for example: &#8216;This Should Never Happen&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPBadGateway">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPBadGateway</tt><big>(</big><em>title</em>, <em>description</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPBadGateway"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPBadGateway" title="Permalink to this definition">¶</a></dt>
+<dd><p>502 Bad Gateway</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Error title, for
+example: &#8216;Upstream Server is Unavailable&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.HTTPServiceUnavailable">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">HTTPServiceUnavailable</tt><big>(</big><em>title</em>, <em>description</em>, <em>retry_after</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#HTTPServiceUnavailable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.HTTPServiceUnavailable" title="Permalink to this definition">¶</a></dt>
+<dd><p>503 Service Unavailable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Error title, for example: &#8216;Temporarily Unavailable&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Human-friendly description of the error, along with
+a helpful suggestion or two.</li>
+<li><strong>retry_after</strong> (<em>date or int</em>) &#8211; Value for the Retry-After header. If a date
+object, will serialize as an HTTP date. Otherwise, a non-negative
+int is expected, representing the number of seconds to wait. See
+also: <a class="reference external" href="http://goo.gl/DIrWr">http://goo.gl/DIrWr</a> .</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Same as for <tt class="docutils literal"><span class="pre">HTTPError</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.InvalidHeader">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">InvalidHeader</tt><big>(</big><em>msg</em>, <em>value</em>, <em>header_name</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#InvalidHeader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.InvalidHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP header is invalid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>msg</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; A description of why the value is invalid.</li>
+<li><strong>value</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The value that is given to the header.</li>
+<li><strong>header_name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the header.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Optional args to include more information.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="falcon.exceptions.InvalidParam">
+<em class="property">exception </em><tt class="descclassname">falcon.exceptions.</tt><tt class="descname">InvalidParam</tt><big>(</big><em>msg</em>, <em>param_name</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/falcon/exceptions.html#InvalidParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#falcon.exceptions.InvalidParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP parameter is invalid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>msg</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; A description of the invalid parameter.</li>
+<li><strong>param_name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the paramameter.</li>
+<li><strong>kwargs</strong> (<em>optional</em>) &#8211; Optional args to include more information.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><!-- Based on TextBlob's template: http://goo.gl/XqFeTq -->
+
+<!-- Dirty hack since RTD doesn't respect 'templates_path' in conf.py-->
+<link href='http://fonts.googleapis.com/css?family=Amethysta:400' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../_static/css/falcon.css" />
+
+<h1 class="logo-text">Falcon</h1>
+<p class="logo">
+    <a href="../index.html"><img class="logo" src="../_static/img/logo.png" width="170" height="214" alt="Logo"/></a>
+</p>
+
+<p>
+  <iframe src="http://ghbtns.com/github-btn.html?user=racker&repo=falcon&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+<p>
+    Falcon is a high-performance Python framework for building web APIs. It
+    encourages the REST architectural style, and tries to do as little as
+    possible while remaining highly effective.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="http://falconframework.org/">Falcon Home</a></li>
+  <li><a href="https://pypi.python.org/pypi/falcon">Falcon @ PyPI</a></li>
+  <li><a href="https://github.com/racker/falcon">Falcon @ GitHub</a></li>
+  <li><a href="https://github.com/racker/falcon/issues">Issue Tracker</a></li>
+</ul>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Error Handling</a><ul>
+<li><a class="reference internal" href="#base-class">Base Class</a></li>
+<li><a class="reference internal" href="#module-falcon.exceptions">Predefined Errors</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="status.html" title="previous chapter">Status Codes</a></li>
+      <li>Next: <a href="hooks.html" title="next chapter">Hooks</a></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2014, Kurt Griffiths and Rackspace Hosting.
+    </div>
+  </body>
+</html>
