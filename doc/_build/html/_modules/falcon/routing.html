@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>falcon.routing &mdash; Falcon 0.2.0rc1 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Falcon 0.2.0rc1 documentation" href="../../index.html"/>
+        <link rel="up" title="falcon" href="../falcon.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> Falcon</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../community/index.html">Community Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../community/help.html">Get Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../community/contribute.html">Contribute to Falcon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../community/faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user/intro.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/quickstart.html">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/tutorial.html">Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Classes and Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/api.html">API Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/request_and_response.html">Req/Resp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/status.html">Status Codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/errors.html">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/middleware.html">Middleware Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/hooks.html">Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/util.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes/index.html">Changelogs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../changes/0.2.0.html">0.2.0</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Falcon</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../falcon.html">falcon</a> &raquo;</li>
+      
+    <li>falcon.routing</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for falcon.routing</h1><div class="highlight"><pre>
+<span class="c"># Copyright 2013 by Rackspace Hosting, Inc.</span>
+<span class="c">#</span>
+<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c"># you may not use this file except in compliance with the License.</span>
+<span class="c"># You may obtain a copy of the License at</span>
+<span class="c">#</span>
+<span class="c">#    http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c">#</span>
+<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c"># See the License for the specific language governing permissions and</span>
+<span class="c"># limitations under the License.</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">falcon.hooks</span> <span class="kn">import</span> <span class="n">_wrap_with_hooks</span>
+<span class="kn">from</span> <span class="nn">falcon</span> <span class="kn">import</span> <span class="n">HTTP_METHODS</span><span class="p">,</span> <span class="n">responders</span>
+
+
+<span class="c"># NOTE(kgriffs): Published method; take care to avoid breaking changes.</span>
+<div class="viewcode-block" id="compile_uri_template"><a class="viewcode-back" href="../../api/routing.html#falcon.routing.compile_uri_template">[docs]</a><span class="k">def</span> <span class="nf">compile_uri_template</span><span class="p">(</span><span class="n">template</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compile the given URI template string into a pattern matcher.</span>
+
+<span class="sd">    This function currently only recognizes Level 1 URI templates, and only</span>
+<span class="sd">    for the path portion of the URI.</span>
+
+<span class="sd">    See also: http://tools.ietf.org/html/rfc6570</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        template: A Level 1 URI template. Method responders must accept, as</span>
+<span class="sd">            arguments, all fields specified in the template (default &#39;/&#39;).</span>
+<span class="sd">            Note that field names are restricted to ASCII a-z, A-Z, and</span>
+<span class="sd">            the underscore &#39;_&#39;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: (template_field_names, template_regex)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;uri_template is not a string&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">template</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;uri_template must start with &#39;/&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s">&#39;//&#39;</span> <span class="ow">in</span> <span class="n">template</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;uri_template may not contain &#39;//&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">template</span> <span class="o">!=</span> <span class="s">&#39;/&#39;</span> <span class="ow">and</span> <span class="n">template</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">):</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">expression_pattern</span> <span class="o">=</span> <span class="s">r&#39;{([a-zA-Z][a-zA-Z_]*)}&#39;</span>
+
+    <span class="c"># Get a list of field names</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">expression_pattern</span><span class="p">,</span> <span class="n">template</span><span class="p">))</span>
+
+    <span class="c"># Convert Level 1 var patterns to equivalent named regex groups</span>
+    <span class="n">escaped</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&#39;[\.\(\)\[\]\?\*\+\^\|]&#39;</span><span class="p">,</span> <span class="s">r&#39;</span><span class="se">\\</span><span class="s">\g&lt;0&gt;&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">expression_pattern</span><span class="p">,</span> <span class="s">r&#39;(?P&lt;\1&gt;[^/]+)&#39;</span><span class="p">,</span> <span class="n">escaped</span><span class="p">)</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="s">r&#39;\A&#39;</span> <span class="o">+</span> <span class="n">pattern</span> <span class="o">+</span> <span class="s">r&#39;\Z&#39;</span>
+
+    <span class="k">return</span> <span class="n">fields</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+
+
+<span class="c"># NOTE(kgriffs): Published method; take care to avoid breaking changes.</span></div>
+<div class="viewcode-block" id="create_http_method_map"><a class="viewcode-back" href="../../api/routing.html#falcon.routing.create_http_method_map">[docs]</a><span class="k">def</span> <span class="nf">create_http_method_map</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">uri_fields</span><span class="p">,</span> <span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Maps HTTP methods (e.g., &#39;GET&#39;, &#39;POST&#39;) to methods of a resource object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        resource: An object with *responder* methods, following the naming</span>
+<span class="sd">            convention *on_\**, that correspond to each method the resource</span>
+<span class="sd">            supports. For example, if a resource supports GET and POST, it</span>
+<span class="sd">            should define ``on_get(self, req, resp)`` and</span>
+<span class="sd">            ``on_post(self, req, resp)``.</span>
+<span class="sd">        uri_fields: A set of field names from the route&#39;s URI template</span>
+<span class="sd">            that a responder must support in order to avoid &quot;method not</span>
+<span class="sd">            allowed&quot;.</span>
+<span class="sd">        before: An action hook or ``list`` of hooks to be called before each</span>
+<span class="sd">            *on_\** responder defined by the resource.</span>
+<span class="sd">        after: An action hook or ``list`` of hooks to be called after each</span>
+<span class="sd">            *on_\** responder defined by the resource.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A mapping of HTTP methods to responders.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">method_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">HTTP_METHODS</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">responder</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="s">&#39;on_&#39;</span> <span class="o">+</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="c"># resource does not implement this method</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Usually expect a method, but any callable will do</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">responder</span><span class="p">):</span>
+                <span class="n">responder</span> <span class="o">=</span> <span class="n">_wrap_with_hooks</span><span class="p">(</span>
+                    <span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">,</span> <span class="n">responder</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
+                <span class="n">method_map</span><span class="p">[</span><span class="n">method</span><span class="p">]</span> <span class="o">=</span> <span class="n">responder</span>
+
+    <span class="c"># Attach a resource for unsupported HTTP methods</span>
+    <span class="n">allowed_methods</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">method_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+    <span class="c"># NOTE(sebasmagri): We want the OPTIONS and 405 (Not Allowed) methods</span>
+    <span class="c"># responders to be wrapped on global hooks</span>
+    <span class="k">if</span> <span class="s">&#39;OPTIONS&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">method_map</span><span class="p">:</span>
+        <span class="c"># OPTIONS itself is intentionally excluded from the Allow header</span>
+        <span class="n">responder</span> <span class="o">=</span> <span class="n">responders</span><span class="o">.</span><span class="n">create_default_options</span><span class="p">(</span>
+            <span class="n">allowed_methods</span><span class="p">)</span>
+        <span class="n">method_map</span><span class="p">[</span><span class="s">&#39;OPTIONS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_wrap_with_hooks</span><span class="p">(</span>
+            <span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">,</span> <span class="n">responder</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
+        <span class="n">allowed_methods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;OPTIONS&#39;</span><span class="p">)</span>
+
+    <span class="n">na_responder</span> <span class="o">=</span> <span class="n">responders</span><span class="o">.</span><span class="n">create_method_not_allowed</span><span class="p">(</span><span class="n">allowed_methods</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">HTTP_METHODS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_methods</span><span class="p">:</span>
+            <span class="n">method_map</span><span class="p">[</span><span class="n">method</span><span class="p">]</span> <span class="o">=</span> <span class="n">_wrap_with_hooks</span><span class="p">(</span>
+                <span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">,</span> <span class="n">na_responder</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">method_map</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2.0rc1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

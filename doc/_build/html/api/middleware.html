@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Middleware Components &mdash; Falcon 0.2.0rc1 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Falcon 0.2.0rc1 documentation" href="../index.html"/>
+        <link rel="up" title="Classes and Functions" href="index.html"/>
+        <link rel="next" title="Hooks" href="hooks.html"/>
+        <link rel="prev" title="Error Handling" href="errors.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> Falcon</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../community/index.html">Community Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../community/help.html">Get Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../community/contribute.html">Contribute to Falcon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../community/faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user/intro.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user/install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user/quickstart.html">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user/tutorial.html">Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Classes and Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">API Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_and_response.html">Req/Resp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status.html">Status Codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html">Error Handling</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Middleware Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hooks.html">Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changes/index.html">Changelogs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../changes/0.2.0.html">0.2.0</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Falcon</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Classes and Functions</a> &raquo;</li>
+      
+    <li>Middleware Components</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/api/middleware.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="middleware-components">
+<span id="middleware"></span><h1>Middleware Components<a class="headerlink" href="#middleware-components" title="Permalink to this headline">¶</a></h1>
+<p>Middleware components provide a way to execute logic before the
+framework routes each request, after each request is routed but before
+the target responder is called, or just before the response is returned
+for each request. Components are registered with the <cite>middleware</cite> kwarg when instantiating
+Falcon&#8217;s <a class="reference internal" href="api.html#api"><em>API class</em></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unlike hooks, middleware methods apply globally to the entire API.</p>
+</div>
+<p>Falcon&#8217;s middleware interface is defined as follows:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ExampleComponent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process the request before routing it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            req: Request object that will eventually be</span>
+<span class="sd">                routed to an on_* responder method.</span>
+<span class="sd">            resp: Response object that will be routed to</span>
+<span class="sd">                the on_* responder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">process_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process the request after routing.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            req: Request object that will be passed to the</span>
+<span class="sd">                routed responder.</span>
+<span class="sd">            resp: Response object that will be passed to the</span>
+<span class="sd">                responder.</span>
+<span class="sd">            resource: Resource object to which the request was</span>
+<span class="sd">                routed. May be None if no route was found for</span>
+<span class="sd">                the request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Post-processing of the response (after routing).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            req: Request object.</span>
+<span class="sd">            resp: Response object.</span>
+<span class="sd">            resource: Resource object to which the request was</span>
+<span class="sd">                routed. May be None if no route was found</span>
+<span class="sd">                for the request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Because <em>process_request</em> executes before routing has occurred, if a
+component modifies <tt class="docutils literal"><span class="pre">req.uri</span></tt> in its <em>process_request</em> method,
+the framework will use the modified value to route the request.</p>
+</div>
+<p>Each component&#8217;s <em>process_request</em>, <em>process_resource</em>, and
+<em>process_response</em> methods are executed hierarchically, as a stack.
+For example, if a list of middleware objects are passed as
+<tt class="docutils literal"><span class="pre">[mob1,</span> <span class="pre">mob2,</span> <span class="pre">mob3]</span></tt>, the order of execution is as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>mob1.process_request
+    mob2.process_request
+        mob3.process_request
+            mob1.process_resource
+                mob2.process_resource
+                    mob3.process_resource
+            &lt;route to responder method&gt;
+        mob3.process_response
+    mob2.process_response
+mob1.process_response
+</pre></div>
+</div>
+<p>Note that each component need not implement all process_*
+methods; in the case that one of the three methods is missing,
+it is treated as a noop in the stack. For example, if <tt class="docutils literal"><span class="pre">mob2</span></tt> did
+not implement <em>process_request</em> and <tt class="docutils literal"><span class="pre">mob3</span></tt> did not implement
+<em>process_response</em>, the execution order would look
+like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>mob1.process_request
+    _
+        mob3.process_request
+            mob1.process_resource
+                mob2.process_resource
+                    mob3.process_resource
+            &lt;route to responder method&gt;
+        _
+    mob2.process_response
+mob1.process_response
+</pre></div>
+</div>
+<p>If one of the <em>process_request</em> middleware methods raises an
+error, it will be processed according to the error type. If
+the type matches a registered error handler, that handler will
+be invoked and then the framework will begin to unwind the
+stack, skipping any lower layers. The error handler may itself
+raise an instance of HTTPError, in which case the framework
+will use the latter exception to update the <em>resp</em> object.
+Regardless, the framework will continue unwinding the middleware
+stack. For example, if <em>mob2.process_request</em> were to raise an
+error, the framework would execute the stack as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>mob1.process_request
+    mob2.process_request
+        &lt;skip mob1/mob2 process_resource, mob3, and routing&gt;
+    mob2.process_response
+mob1.process_response
+</pre></div>
+</div>
+<p>Finally, if one of the <em>process_response</em> methods raises an error,
+or the routed on_* responder method itself raises an error, the
+exception will be handled in a similar manner as above. Then,
+the framework will execute any remaining middleware on the
+stack.</p>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hooks.html" class="btn btn-neutral float-right" title="Hooks"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="errors.html" class="btn btn-neutral" title="Error Handling"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2.0rc1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

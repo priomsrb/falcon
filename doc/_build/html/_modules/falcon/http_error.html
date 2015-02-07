@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>falcon.http_error &mdash; Falcon 0.2.0rc1 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Falcon 0.2.0rc1 documentation" href="../../index.html"/>
+        <link rel="up" title="falcon" href="../falcon.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> Falcon</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../community/index.html">Community Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../community/help.html">Get Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../community/contribute.html">Contribute to Falcon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../community/faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user/intro.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/quickstart.html">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/tutorial.html">Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Classes and Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/api.html">API Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/request_and_response.html">Req/Resp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/status.html">Status Codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/errors.html">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/middleware.html">Middleware Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/hooks.html">Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/routing.html">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/util.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes/index.html">Changelogs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../changes/0.2.0.html">0.2.0</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Falcon</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../falcon.html">falcon</a> &raquo;</li>
+      
+    <li>falcon.http_error</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for falcon.http_error</h1><div class="highlight"><pre>
+<span class="c"># Copyright 2013 by Rackspace Hosting, Inc.</span>
+<span class="c">#</span>
+<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c"># you may not use this file except in compliance with the License.</span>
+<span class="c"># You may obtain a copy of the License at</span>
+<span class="c">#</span>
+<span class="c">#    http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c">#</span>
+<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c"># See the License for the specific language governing permissions and</span>
+<span class="c"># limitations under the License.</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">as</span> <span class="nn">et</span>
+
+<span class="k">try</span><span class="p">:</span>  <span class="c"># pragma nocover</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c"># pragma nocover</span>
+    <span class="n">OrderedDict</span> <span class="o">=</span> <span class="nb">dict</span>
+
+<span class="kn">from</span> <span class="nn">falcon.util</span> <span class="kn">import</span> <span class="n">uri</span>
+
+
+<span class="k">class</span> <span class="nc">HTTPError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents a generic HTTP error.</span>
+
+<span class="sd">    Raise this or a child class to have Falcon automagically return pretty</span>
+<span class="sd">    error responses (with an appropriate HTTP status code) to the client</span>
+<span class="sd">    when something goes wrong.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        status (str): HTTP status line, e.g. &#39;748 Confounded by Ponies&#39;.</span>
+<span class="sd">        has_representation (bool): Read-only property that determines</span>
+<span class="sd">            whether error details will be serialized when composing</span>
+<span class="sd">            the HTTP response. In ``HTTPError`` this property always</span>
+<span class="sd">            returns ``True``, but child classes may override it</span>
+<span class="sd">            in order to return ``False`` when an empty HTTP body is desired.</span>
+<span class="sd">            See also the ``falcon.http_error.NoRepresentation`` mixin.</span>
+<span class="sd">        title (str): Error title to send to the client. Will be ``None`` if</span>
+<span class="sd">            the error should result in an HTTP response with an empty body.</span>
+<span class="sd">        description (str): Description of the error to send to the client.</span>
+<span class="sd">        headers (dict): Extra headers to add to the response.</span>
+<span class="sd">        link (str): An href that the client can provide to the user for</span>
+<span class="sd">            getting help.</span>
+<span class="sd">        code (int): An internal application code that a user can reference when</span>
+<span class="sd">            requesting support for the error.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        status (str): HTTP status code and text, such as &quot;400 Bad Request&quot;</span>
+
+<span class="sd">    Keyword Args:</span>
+<span class="sd">        title (str): Human-friendly error title (default ``None``).</span>
+<span class="sd">        description (str): Human-friendly description of the error, along with</span>
+<span class="sd">            a helpful suggestion or two (default ``None``).</span>
+<span class="sd">        headers (dict or list): A ``dict`` of header names and values</span>
+<span class="sd">            to set, or a ``list`` of (*name*, *value*) tuples. Both *name* and</span>
+<span class="sd">            *value* must be of type ``str`` or ``StringType``, and only</span>
+<span class="sd">            character values 0x00 through 0xFF may be used on platforms that</span>
+<span class="sd">            use wide characters.</span>
+
+<span class="sd">            Note:</span>
+<span class="sd">                The Content-Type header, if present, will be overridden. If</span>
+<span class="sd">                you wish to return custom error messages, you can create</span>
+<span class="sd">                your own HTTP error class, and install an error handler</span>
+<span class="sd">                to convert it into an appropriate HTTP response for the</span>
+<span class="sd">                client</span>
+
+<span class="sd">            Note:</span>
+<span class="sd">                Falcon can process a list of ``tuple`` slightly faster</span>
+<span class="sd">                than a ``dict``.</span>
+
+<span class="sd">        headers (dict): Extra headers to return in the</span>
+<span class="sd">            response to the client (default ``None``).</span>
+<span class="sd">        href (str): A URL someone can visit to find out more information</span>
+<span class="sd">            (default ``None``). Unicode characters are percent-encoded.</span>
+<span class="sd">        href_text (str): If href is given, use this as the friendly</span>
+<span class="sd">            title/description for the link (defaults to &quot;API documentation</span>
+<span class="sd">            for this error&quot;).</span>
+<span class="sd">        code (int): An internal code that customers can reference in their</span>
+<span class="sd">            support request or to help them when searching for knowledge</span>
+<span class="sd">            base articles related to this error (default ``None``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s">&#39;status&#39;</span><span class="p">,</span>
+        <span class="s">&#39;title&#39;</span><span class="p">,</span>
+        <span class="s">&#39;description&#39;</span><span class="p">,</span>
+        <span class="s">&#39;headers&#39;</span><span class="p">,</span>
+        <span class="s">&#39;link&#39;</span><span class="p">,</span>
+        <span class="s">&#39;code&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">href</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">href_text</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+
+        <span class="k">if</span> <span class="n">href</span><span class="p">:</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="n">link</span><span class="p">[</span><span class="s">&#39;text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">href_text</span> <span class="ow">or</span> <span class="s">&#39;Documentation related to this error&#39;</span><span class="p">)</span>
+            <span class="n">link</span><span class="p">[</span><span class="s">&#39;href&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">href</span><span class="p">)</span>
+            <span class="n">link</span><span class="p">[</span><span class="s">&#39;rel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;help&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">has_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a basic dictionary representing the error.</span>
+
+<span class="sd">        This method can be useful when serializing the error to hash-like</span>
+<span class="sd">        media types, such as YAML, JSON, and MessagePack.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj_type: A dict-like type that will be used to store the</span>
+<span class="sd">                error information (default ``dict``).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary populated with the error&#39;s title, description, etc.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_representation</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">obj_type</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s">&#39;code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s">&#39;link&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span>
+
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a pretty-printed JSON representation of the error.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A JSON document for the error.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;: &#39;</span><span class="p">),</span>
+                          <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns an XML-encoded representation of the error.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An XML document for the error.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_representation</span>
+
+        <span class="n">error_element</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">et</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">error_element</span><span class="p">,</span> <span class="s">&#39;title&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">et</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">error_element</span><span class="p">,</span> <span class="s">&#39;description&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">et</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">error_element</span><span class="p">,</span> <span class="s">&#39;code&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">link_element</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">error_element</span><span class="p">,</span> <span class="s">&#39;link&#39;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;text&#39;</span><span class="p">,</span> <span class="s">&#39;href&#39;</span><span class="p">,</span> <span class="s">&#39;rel&#39;</span><span class="p">):</span>
+                <span class="n">et</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">link_element</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="s">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#39;</span> <span class="o">+</span>
+                <span class="n">et</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">error_element</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="NoRepresentation"><a class="viewcode-back" href="../../api/errors.html#falcon.http_error.NoRepresentation">[docs]</a><span class="k">class</span> <span class="nc">NoRepresentation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mixin for ``HTTPError`` child classes that have no representation.</span>
+
+<span class="sd">    This class can be mixed in when inheriting from ``HTTPError``, in order</span>
+<span class="sd">    to override the `has_representation` property such that it always</span>
+<span class="sd">    returns ``False``. This, in turn, will cause Falcon to return an empty</span>
+<span class="sd">    response body to the client.</span>
+
+<span class="sd">    You can use this mixin when defining errors that either should not have</span>
+<span class="sd">    a body (as dictated by HTTP standards or common practice), or in the</span>
+<span class="sd">    case that a detailed error response may leak information to an attacker.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This mixin class must appear before ``HTTPError`` in the base class</span>
+<span class="sd">        list when defining the child; otherwise, it will not override the</span>
+<span class="sd">        `has_representation` property as expected.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">has_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<span class="k">class</span> <span class="nc">OptionalRepresentation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mixin for ``HTTPError`` child classes that may have a representation.</span>
+
+<span class="sd">    This class can be mixed in when inheriting from ``HTTPError`` in order</span>
+<span class="sd">    to override the `has_representation` property, such that it will</span>
+<span class="sd">    return ``False`` when the error instance has no description</span>
+<span class="sd">    (i.e., the `description` kwarg was not set).</span>
+
+<span class="sd">    You can use this mixin when defining errors that do not include</span>
+<span class="sd">    a body in the HTTP response by default, serializing details only when</span>
+<span class="sd">    the web developer provides a description of the error.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This mixin class must appear before ``HTTPError`` in the base class</span>
+<span class="sd">        list when defining the child; otherwise, it will not override the</span>
+<span class="sd">        `has_representation` property as expected.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">has_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">OptionalRepresentation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2.0rc1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
