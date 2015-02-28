@@ -125,7 +125,7 @@ the basics of HTTP.
 In Falcon, you map incoming requests to things called "Resources". A
 Resource is just a regular Python class that includes some methods that
 follow a certain naming convention. Each of these methods corresponds to
-an action that the API client can request be performed in order to fetch
+an action that the API client can request to be performed in order to fetch
 or transform the resource in question.
 
 Since we are building an image-sharing API, let's create an "images"
